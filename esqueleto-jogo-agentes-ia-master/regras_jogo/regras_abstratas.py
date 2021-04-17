@@ -38,7 +38,7 @@ class AbstractRegrasJogo(ABC):
     def registrarProximaAcao(self, id_agente, acao):
         """ Informa ao jogo qual a ação de um jogador especificamente.
         Neste momento, o jogo ainda não é transformado em seu próximo estado,
-        isso é feito no método de atualização do mundo.
+ s       isso é feito no método de atualização do mundo.
         """
         return
     
