@@ -16,7 +16,7 @@ class AbstractRegrasJogo(ABC):
         """ Cria ou recupera id de um personagem agente.
         """
         return
-    
+
     @abstractmethod
     def isFim(self):
         """ Boolean indicando fim de jogo em True.
