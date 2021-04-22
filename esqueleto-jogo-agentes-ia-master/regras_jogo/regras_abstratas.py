@@ -60,4 +60,4 @@ def construir_jogo(*args,**kwargs):
     """ Método factory para uma instância RegrasJogo arbitrária, de acordo com os
     parâmetros. Pode-se mudar à vontade a assinatura do método.
     """
-    return NomeDoSeuJogo()
+    return

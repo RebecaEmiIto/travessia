@@ -1,16 +1,15 @@
-from agentes.abstrato import AgenteAbstrato
+from .abstrato import AgenteAbstrato
 from typing import Tuple
-from agentes.abstrato import AgenteAbstrato
-from percepcoes import PercepcoesJogador
-from acoes import AcaoJogador, DirecaoMoverBolinha
+from .abstrato import AgenteAbstrato
+from ..percepcoes import PercepcoesJogador
+from ..acoes import AcaoJogador, DirecaoMoverBolinha
 
 class AgentePrepostoESHumano(AgenteAbstrato):
-
-    count = 0
     def adquirirPercepcao(self, percepcao_mundo: PercepcoesJogador):
         """ Inspeciona a disposicao dos elementos no objeto de visao e escreve
         na tela para o usuário saber o que seu agente está percebendo.
         """
+        count = 0
         print("--- Tabuleiro após a ultima jogada: ---\n")
         for i in PercepcoesJogador.personagens:
             print(i["Esquerda"])
