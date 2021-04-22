@@ -55,3 +55,9 @@ class RegrasTravessia(AbstractRegrasJogo):
                         if "Policial" in esquerda: return True
                         elif len(esquerda) == 1: return True
                         else: return False
+
+    def construir_jogo(*args,**kwargs):
+        """ Método factory para uma instância RegrasJogo arbitrária, de acordo com os
+        parâmetros. Pode-se mudar à vontade a assinatura do método.
+        """
+        return RegrasTravessia()

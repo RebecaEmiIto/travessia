@@ -1,3 +1,4 @@
+from typing import Tuple, Set, Optional
 from dataclasses import dataclass
 
 @dataclass
@@ -7,4 +8,5 @@ class PercepcoesJogador():
     
     Vide documentação sobre dataclasses em python.
     '''
-    pass
+    personagens: dict = {str: [str], str: [str]}
+    mensagem_jogo: Optional[str] = None
