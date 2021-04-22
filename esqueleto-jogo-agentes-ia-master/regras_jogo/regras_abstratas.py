@@ -7,10 +7,6 @@ class AbstractRegrasJogo(ABC):
     abstratos sobrecarregados.
     """
 
-    def __init__(self) -> None:
-        super().__init__()
-        self.jogadores = {Personagens.O_JOGADOR: 0}
-
     @abstractmethod
     def registrarAgentePersonagem(self, personagem):
         """ Cria ou recupera id de um personagem agente.
