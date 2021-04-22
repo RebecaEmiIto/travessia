@@ -2,7 +2,7 @@
 
 Esqueleto de código para projeto de agentes inteligentes em disciplinas de inteligência artificial, prática de algoritmos de buscas cegas e informadas.
 
-Regras do jogo:
+Regras do jogo "Travessia":
     
     1) A jangada só pode carregar duas pessoas por vez.
     
@@ -17,3 +17,12 @@ Regras do jogo:
     6) As filhas não podem ser transportadas pelo pai.
     
     7) A prisioneira não pode ficar com membros da família na ausência do policial.
+
+espectativa - ideia
+Esquerda: Pai, Mae, Filho1, Fliha1, Filho2, Fliha2, Policial, Prisioneira
+------------------------------------------------------------------------------------------
+
+
+Jangada
+------------------------------------------------------------------------------------------
+Direita: 

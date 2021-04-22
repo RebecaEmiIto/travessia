@@ -11,7 +11,7 @@ class DirecaoJangada(Enum):
 @dataclass
 class AcaoJogador():
     tipo: str
-    parametros: tuple = tuple()
+    parametros: tuple = tuple() 
 
     @classmethod
     def SelecionarIndividuo(cls, p1: str, p2: str, direcao: DirecaoJangada):

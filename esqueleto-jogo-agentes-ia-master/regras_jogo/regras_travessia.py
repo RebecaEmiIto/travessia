@@ -5,8 +5,7 @@ from .personagens import Personagens
 from percepcoes import PercepcoesJogador
 from acoes import AcoesJogador, SelecionarIndividuo
 
-class RegrasTravessia(AbstractRegrasJogo):
-    
+class RegrasTravessia(AbstractRegrasJogo):    
 
     def __init__(self) -> None:
         super().__init__()
