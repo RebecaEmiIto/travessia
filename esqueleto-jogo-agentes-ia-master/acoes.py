@@ -14,7 +14,7 @@ class AcaoJogador():
     parametros: tuple = tuple() 
 
     @classmethod
-    def SelecionarIndividuo(cls, p1: str, p2: str, direcao: DirecaoJangada):
+    def SelecionarIndividuo(cls, p1: str, p2: str, direcao: DirecaoJangada) -> 'AcaoJogador':
         return cls(AcoesJogador.Selecionar_Indivíduo, (p1, p2, direcao))
 
     def Validacao(self, p1: str, p2: str):
@@ -27,3 +27,5 @@ class AcaoJogador():
         elif p1 == "Prisioneira":
             if p2 != "Policial":
                 return False
+
+

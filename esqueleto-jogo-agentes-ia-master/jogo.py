@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import time
-from regras_jogo.regras_abstratas import construir_jogo
+from regras_jogo.regras_travessia import construir_jogo
 from regras_jogo.personagens import Personagens
 from agentes.abstrato import construir_agente
 from agentes.tipos import TiposAgentes

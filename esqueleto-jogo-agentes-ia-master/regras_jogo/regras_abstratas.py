@@ -11,7 +11,7 @@ class AbstractRegrasJogo(ABC):
     def registrarAgentePersonagem(self, personagem):
         """ Cria ou recupera id de um personagem agente.
         """
-        return
+        return 254
 
     @abstractmethod
     def isFim(self):
