@@ -11,8 +11,8 @@ sys.path.append("..")
 class RegrasTravessia(AbstractRegrasJogo):
     def __init__(self) -> None:
         super().__init__()
-        t0 = {"Esquerda": ["Pai", "Mae", "Filho1", "Fliha1", "Filho2", "Fliha2", "Policial", "Prisioneira"],
-              "Direita": []}
+        t0 = {'Esquerda': ['Pai', 'Mae', 'Filho1', 'Fliha1', 'Filho2', 'Fliha2', 'Policial', 'Prisioneira'],
+              'Direita': []}
         self.t1 = t0
         self.id_personagem = {Personagens.O_JOGADOR: 0}
         self.acao_personagem = {0: None}
@@ -35,7 +35,8 @@ class RegrasTravessia(AbstractRegrasJogo):
         sua manipulação direta não tem nenhum efeito no mundo de jogo real.
         """
         percepcoes_jogador = PercepcoesJogador(
-            personagens = set(self.t1),
+            personagens_esquerda = set(self.t1['Esquerda']),
+            personagens_direita = set(self.t1['Direita']),
             mensagem_jogo = self.msg_jogador)
 
         self.msg_jogador = None

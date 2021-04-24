@@ -21,7 +21,7 @@ Regras do jogo "Travessia":
 espectativa - ideia
 Esquerda: Pai, Mae, Filho1, Fliha1, Filho2, Fliha2, Policial, Prisioneira
 ------------------------------------------------------------------------------------------
-
 Jangada
+
 ------------------------------------------------------------------------------------------
 Direita: 

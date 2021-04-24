@@ -8,5 +8,6 @@ class PercepcoesJogador():
     
     Vide documentação sobre dataclasses em python.
     '''
-    personagens: {str: [str], str: [str]}
+    personagens_esquerda: {str: [str]}
+    personagens_direita: {str: [str]}
     mensagem_jogo: Optional[str] = None
