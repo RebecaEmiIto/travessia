@@ -1,8 +1,8 @@
-from .abstrato import AgenteAbstrato
+
 from typing import Tuple
 from .abstrato import AgenteAbstrato
-from ..percepcoes import PercepcoesJogador
-from ..acoes import AcaoJogador, DirecaoMoverBolinha
+from percepcoes import PercepcoesJogador
+from acoes import AcaoJogador, DirecaoJangada
 
 class AgentePrepostoESHumano(AgenteAbstrato):
     def adquirirPercepcao(self, percepcao_mundo: PercepcoesJogador):
@@ -52,21 +52,7 @@ class AgentePrepostoESHumano(AgenteAbstrato):
         """
         print("\nTabuleiro após a última jogada.")
 
-        linhas, colunas = percepcao_mundo.dimensoes
-        start_linha, stop_linha = linhas//2, -1 * linhas//2
-        start_coluna, stop_coluna = -1 * (colunas//2), colunas//2 + 1
-
-        print("+-3210123+")
-        for linha in range(start_linha, stop_linha, -1):
-            print_linha = f'{abs(linha)} '
-            for coluna in range(start_coluna, stop_coluna, 1):
-                if (coluna, linha) in percepcao_mundo.pos_bolinhas:
-                    print_linha += 'o'
-                else:
-                    print_linha += '.'
         
-            print(print_linha)
-        print('-')
 
         if percepcao_mundo.mensagem_jogo:
             print(f'Mensagem do jogo: {percepcao_mundo.mensagem_jogo}')

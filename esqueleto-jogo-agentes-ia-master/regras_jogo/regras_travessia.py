@@ -1,27 +1,30 @@
+import sys
 from typing import Tuple
 from .regras_abstratas import AbstractRegrasJogo
 from .personagens import Personagens
 # from .resta_um import TabuleiroRestaUm,
-# from percepcoes import PercepcoesJogador
-from ..acoes import AcoesJogador, DirecaoJangada
+from percepcoes import PercepcoesJogador
+from acoes import AcoesJogador, DirecaoJangada
+
+sys.path.append("..")
 
 class RegrasTravessia(AbstractRegrasJogo):
-
     def __init__(self) -> None:
         super().__init__()
         t0 = {"Esquerda": ["Pai", "Mae", "Filho1", "Fliha1", "Filho2", "Fliha2", "Policial", "Prisioneira"],
               "Direita": []}
         self.t1 = t0
-        self.id_personagem = {Personagens.O_JOGADOR}
+        self.id_personagem = {Personagens.O_JOGADOR: 0}
         self.acao_personagem = {0: None}
+        self.msg_jogador = None
 
-    def registrarAgentePersonagem(self, personagem):
+    def registrarAgentePersonagem(self, personagem:list):
         """ Cria ou recupera id de um personagem agente.
         """
         return self.id_personagem[personagem]
 
-    def isFim(self) -> bool:
-        return self.t1["Direita"] == len(8)
+    def isFim(self):
+        return len(self.t1["Direita"]) == 8
 
     def gerarCampoVisao(self, id_agente):
         """ Retorna um EstadoJogoView para ser consumido por um agente
@@ -44,7 +47,8 @@ class RegrasTravessia(AbstractRegrasJogo):
         Neste momento, o jogo ainda não é transformado em seu próximo estado,
         isso é feito no método de atualização do mundo.
         """
-        self.acoes_personagens[id_agente] = acaon
+        self.acoes_personagens[id_agente] = acao
+
     def atualizarEstado(self, diferencial_tempo):
         cont = 0
         """ Apenas neste momento o jogo é atualizado para seu próximo estado
@@ -53,24 +57,17 @@ class RegrasTravessia(AbstractRegrasJogo):
         acao_jogador = self.acao_personagem[
             self.id_personagem[Personagens.O_JOGADOR]]
         if acao_jogador.tipo == AcoesJogador.Selecionar_Indivíduo:
-            pass
 
             p1, p2 = acao_jogador.parametros
-
             if (p1, p2) in self.t1:
-
-                peca_adjacente = (x + x_mov, y + y_mov)
-                espaco_pos_adjacente = (x + x_mov*2, y + y_mov*2)
                 if self.ValidacaoDireitaEsquerda() is True:
-                    if cont % 2 == 0:
-                        self.t1.discard(peca_adjacente)
-                        self.t1.discard((x,y))
-                        self.t1.add(espaco_pos_adjacente)
+                    if cont % 2 == 0: # esquerda
+                        self.t1['Esquerda'].discard(p1, p2)
+                        self.t1['Direita'].add(p1, p2)
                         cont += 1
-                    else:
-                        self.t1.discard(peca_adjacente)
-                        self.t1.discard((x,y))
-                        self.t1.add(espaco_pos_adjacente)
+                    else: # direita
+                        self.t1['Direita'].discard(p1, p2)
+                        self.t1['Esquerda'].add(p1, p2)
                         cont += 1
                 else:
                     self.msg_jogador = f'Direção especificada para movimento não é possível.'
