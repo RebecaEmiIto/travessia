@@ -35,7 +35,7 @@ class AgentePrepostoESHumano(AgenteAbstrato):
             jogada = input("Escreva sua jogada no formato [Pessoa1, Pessoa2]")
             if not AgentePrepostoESHumano.parse_jogada():
                 if count % 2 == 0:
-                    print(PercepcoesJogador.personagens["Esquerda"])
+                    print(PercepcoesJogador.personagens_esquerda)
 
     @staticmethod
     def parse_jogada(entrada: str) -> {str: [str], str: [str]}:
