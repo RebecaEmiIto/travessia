@@ -4,7 +4,7 @@ from .regras_abstratas import AbstractRegrasJogo
 from .personagens import Personagens
 # from .resta_um import TabuleiroRestaUm,
 from percepcoes import PercepcoesJogador
-from acoes import AcoesJogador, DirecaoJangada
+from acoes import AcoesJogador, Individuo
 
 sys.path.append("..")
 
@@ -48,7 +48,7 @@ class RegrasTravessia(AbstractRegrasJogo):
         Neste momento, o jogo ainda não é transformado em seu próximo estado,
         isso é feito no método de atualização do mundo.
         """
-        self.acoes_personagens[id_agente] = acao
+        self.acao_personagem[id_agente] = acao
 
     def atualizarEstado(self, diferencial_tempo):
         cont = 0
@@ -58,22 +58,29 @@ class RegrasTravessia(AbstractRegrasJogo):
         acao_jogador = self.acao_personagem[
             self.id_personagem[Personagens.O_JOGADOR]]
         if acao_jogador.tipo == AcoesJogador.Selecionar_Indivíduo:
-
             p1, p2 = acao_jogador.parametros
-            if (p1, p2) in self.t1:
+
+            pessoa1 = self.decodificar_pessoa(p1)
+            pessoa2 = self.decodificar_pessoa(p2)
+        
+            if (p1 in self.t1 and p2 in self.t1):
                 if self.ValidacaoDireitaEsquerda() is True:
                     if cont % 2 == 0: # esquerda
-                        self.t1['Esquerda'].discard(p1, p2)
-                        self.t1['Direita'].add(p1, p2)
+                        self.t1['Esquerda'].remove(pessoa1)
+                        self.t1['Esquerda'].remove(pessoa2)
+                        self.t1['Direita'].add(pessoa1)
+                        self.t1['Direita'].add(pessoa2)
                         cont += 1
                     else: # direita
-                        self.t1['Direita'].discard(p1, p2)
-                        self.t1['Esquerda'].add(p1, p2)
+                        self.t1['Direita'].remove(pessoa1)
+                        self.t1['Direita'].remove(pessoa2)
+                        self.t1['Esquerda'].add(pessoa1)
+                        self.t1['Esquerda'].add(pessoa2)
                         cont += 1
                 else:
-                    self.msg_jogador = f'Direção especificada para movimento não é possível.'
+                    self.msg_jogador = f'Movimento inválido.'
             else:
-                self.msg_jogador = f'Não há bolinha na coordenada especificada.'
+                self.msg_jogador = f'{pessoa1} e/ou {pessoa2} não encontrados.'
         else:
             self.msg_jogador = f'Ação especificada inválida.'    
             
@@ -127,6 +134,25 @@ class RegrasTravessia(AbstractRegrasJogo):
                         if "Policial" in esquerda: return True
                         elif len(esquerda) == 1: return True
                         else: return False
+
+    @staticmethod
+    def decodificar_pessoa(pessoa):
+        if pessoa == Individuo.Pai:
+            return 'Pai'
+        elif pessoa == Individuo.Mae:
+            return 'Mãe'
+        elif pessoa == Individuo.Filho1:
+            return 'Filho1'
+        elif pessoa == Individuo.Filha1:
+            return 'Filha1'
+        elif pessoa == Individuo.Filho2:
+            return 'Filho2'
+        elif pessoa == Individuo.Filha2:
+            return 'Filha2'
+        elif pessoa == Individuo.Policial:
+            return 'Policial'
+        elif pessoa == Individuo.Prisioneira:
+            return 'Prisioneira'
 
 def construir_jogo(*args, **kwargs):
     """ Método factory para uma instância RegrasJogo arbitrária, de acordo com os

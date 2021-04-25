@@ -4,9 +4,15 @@ from dataclasses import dataclass
 class AcoesJogador(Enum):
     Selecionar_Indivíduo = 'SelecionarIndividuo'
 
-class DirecaoJangada(Enum):
-    Direita = 'Direita'
-    Esquerda = 'Esquerda'
+class Individuo(Enum):
+    Pai = 'Pai'
+    Mae = 'Mãe'
+    Filho1 = 'Filho1'
+    Filha1 = 'Filha1'
+    Filho2 = 'Filho2'
+    Filha2 = 'Filha2'
+    Policial = 'Policial'
+    Prisioneira = 'Prisioneira'
 
 @dataclass
 class AcaoJogador():
@@ -14,10 +20,10 @@ class AcaoJogador():
     parametros: tuple = tuple() 
 
     @classmethod
-    def SelecionarIndividuo(cls, p1: str, p2: str, direcao: DirecaoJangada) -> 'AcaoJogador':
-        return cls(AcoesJogador.Selecionar_Indivíduo, (p1, p2, direcao))
+    def SelecionarIndividuo(cls, p1: Individuo, p2: Individuo) -> 'AcaoJogador':
+        return cls(AcoesJogador.Selecionar_Indivíduo, (p1, p2))
 
-    def Validacao(self, p1: str, p2: str):
+    def Validacao(self, p1: int, p2: int):
         if p1 == "Pai":
             if p2 == "Filha1" or p2 == "Filha2":
                 return False
@@ -27,5 +33,3 @@ class AcaoJogador():
         elif p1 == "Prisioneira":
             if p2 != "Policial":
                 return False
-
-
