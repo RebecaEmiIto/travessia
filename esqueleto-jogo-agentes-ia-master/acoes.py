@@ -21,6 +21,7 @@ class AcaoJogador():
 
     @classmethod
     def SelecionarIndividuo(cls, p1: Individuo, p2: Individuo) -> 'AcaoJogador':
+        print(f'{p1} & {p2}')
         return cls(AcoesJogador.Selecionar_Indivíduo, (p1, p2))
 
     def Validacao(self, p1: int, p2: int):

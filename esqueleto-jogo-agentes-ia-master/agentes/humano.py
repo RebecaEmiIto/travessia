@@ -31,19 +31,21 @@ class AgentePrepostoESHumano(AgenteAbstrato):
             print(f'Mensagem do jogo: {percepcao_mundo.mensagem_jogo}')
     
     def escolherProximaAcao(self):  
-        jogada = None
+        jogada = 0
         while not jogada:
             jogada = input("Escreva sua jogada no formato [Pessoa1,Pessoa2]\n").strip()
             try:
                 p1, p2 = AgentePrepostoESHumano.parse_jogada(jogada)
+                #print(f'{p1} e {p2}')
             except ValueError:
-                jogada = None
+                jogada = 9
                 print("Jogada entrada é inválida. Tente novamente.")
 
         return AcaoJogador.SelecionarIndividuo(p1, p2)
 
     @staticmethod
     def parse_jogada(entrada: str) -> Tuple[int, int]:
+        #print(entrada)
         pessoa = {
             1: Individuo.Pai,
             2: Individuo.Mae,
@@ -54,8 +56,7 @@ class AgentePrepostoESHumano(AgenteAbstrato):
             7: Individuo.Policial,
             8: Individuo.Prisioneira
         }
-        raw_p1, raw_p2 = entrada.split(',')
-        p1, p2 = pessoa.get(raw_p1), pessoa.get(raw_p2)
+        p1, p2 = entrada.split(',')
         #if not d:
         #   raise ValueError()
 

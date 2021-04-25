@@ -11,7 +11,7 @@ sys.path.append("..")
 class RegrasTravessia(AbstractRegrasJogo):
     def __init__(self) -> None:
         super().__init__()
-        t0 = {'Esquerda': ['Pai', 'Mae', 'Filho1', 'Fliha1', 'Filho2', 'Fliha2', 'Policial', 'Prisioneira'],
+        t0 = {'Esquerda': ['Pai', 'Mãe', 'Filho1', 'Filha1', 'Filho2', 'Filha2', 'Policial', 'Prisioneira'],
               'Direita': []}
         self.t1 = t0
         self.id_personagem = {Personagens.O_JOGADOR: 0}
@@ -59,23 +59,22 @@ class RegrasTravessia(AbstractRegrasJogo):
             self.id_personagem[Personagens.O_JOGADOR]]
         if acao_jogador.tipo == AcoesJogador.Selecionar_Indivíduo:
             p1, p2 = acao_jogador.parametros
-
             pessoa1 = self.decodificar_pessoa(p1)
             pessoa2 = self.decodificar_pessoa(p2)
-        
-            if (p1 in self.t1 and p2 in self.t1):
+                
+            if (pessoa1 in self.t1['Esquerda'] and pessoa2 in self.t1['Esquerda']):
                 if self.ValidacaoDireitaEsquerda() is True:
                     if cont % 2 == 0: # esquerda
                         self.t1['Esquerda'].remove(pessoa1)
                         self.t1['Esquerda'].remove(pessoa2)
-                        self.t1['Direita'].add(pessoa1)
-                        self.t1['Direita'].add(pessoa2)
+                        self.t1['Direita'].insert(0, pessoa1)
+                        self.t1['Direita'].insert(0, pessoa2)
                         cont += 1
                     else: # direita
                         self.t1['Direita'].remove(pessoa1)
                         self.t1['Direita'].remove(pessoa2)
-                        self.t1['Esquerda'].add(pessoa1)
-                        self.t1['Esquerda'].add(pessoa2)
+                        self.t1['Esquerda'].insert(0, pessoa1)
+                        self.t1['Esquerda'].insert(0, pessoa2)
                         cont += 1
                 else:
                     self.msg_jogador = f'Movimento inválido.'
@@ -102,11 +101,11 @@ class RegrasTravessia(AbstractRegrasJogo):
                 for j in range(len(esquerda)):
             
                     if esquerda[j] == "Pai":
-                        if "Filha1" or "Filha2" in esquerda:
-                            if "Mae" in esquerda: return True
+                        if ("Filha1" in esquerda) or ("Filha2" in esquerda):
+                            if "Mãe" in esquerda: return True
                             else: return False
 
-                    if esquerda[j] == "Mae":
+                    if esquerda[j] == "Mãe":
                         if "Filho1" or "Filho2" in esquerda:
                             if "Pai" in esquerda: return True
                             else: return False
@@ -136,23 +135,26 @@ class RegrasTravessia(AbstractRegrasJogo):
                         else: return False
 
     @staticmethod
-    def decodificar_pessoa(pessoa):
-        if pessoa == Individuo.Pai:
+    def decodificar_pessoa(p):
+        pessoa = int(p)
+        if pessoa == 1:
             return 'Pai'
-        elif pessoa == Individuo.Mae:
+        elif pessoa == 2:
             return 'Mãe'
-        elif pessoa == Individuo.Filho1:
+        elif pessoa == 3:
             return 'Filho1'
-        elif pessoa == Individuo.Filha1:
+        elif pessoa == 4:
             return 'Filha1'
-        elif pessoa == Individuo.Filho2:
+        elif pessoa == 5:
             return 'Filho2'
-        elif pessoa == Individuo.Filha2:
+        elif pessoa == 6:
             return 'Filha2'
-        elif pessoa == Individuo.Policial:
+        elif pessoa == 7:
             return 'Policial'
-        elif pessoa == Individuo.Prisioneira:
+        elif pessoa == 8:
             return 'Prisioneira'
+
+            
 
 def construir_jogo(*args, **kwargs):
     """ Método factory para uma instância RegrasJogo arbitrária, de acordo com os
