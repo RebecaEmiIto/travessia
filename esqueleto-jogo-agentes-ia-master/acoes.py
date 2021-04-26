@@ -14,26 +14,11 @@ class Individuo(Enum):
     Policial = 'Policial'
     Prisioneira = 'Prisioneira'
 
-@dataclass
+@dataclass  
 class AcaoJogador():
     tipo: str
     parametros: tuple = tuple() 
 
     @classmethod
     def SelecionarIndividuo(cls, p1: Individuo, p2: Individuo) -> 'AcaoJogador':
-        #print(f'{p1} & {p2}')
         return cls(AcoesJogador.Selecionar_Indivíduo, (p1, p2))
-
-    def Validacao(self, p1: int, p2: int):
-        if p1 == "Pai":
-            if p2 == "Filha1" or p2 == "Filha2":
-                return False
-        elif p1 == "Mae":
-            if p2 == "Filho1" or p2 == "Filho2":
-                return False
-        elif p1 == "Prisioneira":
-            if p2 != "Policial":
-                return False
-        elif p1 == "Policial":
-            if p2 != "Prisioneira":
-                return False
