@@ -1,4 +1,4 @@
-from node import Node
+#from node import Node
 
 """
 public String bfs() {
@@ -58,6 +58,19 @@ public String bfs() {
         stringBuilder.append("]");
         return stringBuilder.toString();
 """
-class Arvore_bfs():
-    def bfs():
-        root = Node.__init__()
+#class Arvore_bfs():
+#    def bfs():
+#        root = Node.__init__()
+
+def busca_em_arvore(problema):
+    """Retorna uma solução ou falha"""
+    borda = [Node(problema.estado_inicial())]
+    while borda:
+        folha = borda.pop()
+        if problema.teste_objetivo(folha.estado):
+            return folha
+        for acao in problema.acaoes(folha.estado):
+            expandido = Node.criar_no_filho(problema, folha, acao)
+            borda.append(expandido)
+    
+    raise ProblemaSemSoluçãoException()

@@ -60,17 +60,27 @@ class RegrasTravessia(AbstractRegrasJogo):
             self.id_personagem[Personagens.O_JOGADOR]]
         if acao_jogador.tipo == AcoesJogador.Selecionar_Indivíduo:
             p1, p2 = acao_jogador.parametros
-            
+            # Devolve o valor(personagem) de cada integer
             pessoa1 = self.decodificar_pessoa(p1)
             pessoa2 = self.decodificar_pessoa(p2)
+            
+            # Verifica se o Pai, a Mãe ou o Policial estão na Jangada(que são as pessoas que
+            # conseguem usar a Jangada), caso contrário, dá "Erro"
+            # Regra 2 (README.md)
             if pessoa1 == 'Pai' or pessoa1 == 'Mãe' or pessoa1 == 'Policial' \
             or pessoa2 == 'Pai' or pessoa2 == 'Mãe' or pessoa2 == 'Policial':
-                if self.cont % 2 == 0: # esquerda
+
+                if self.cont % 2 == 0: # Jangada na esquerda
+                    # Seleção de 2 pessoas da Esquerda
                     if (pessoa1 in self.t1['Esquerda'] and pessoa2 in self.t1['Esquerda']):
                         self.t1['Esquerda'].remove(pessoa1)
                         self.t1['Esquerda'].remove(pessoa2)
                         self.t1['Direita'].insert(0, pessoa1)
                         self.t1['Direita'].insert(0, pessoa2)
+
+                        # Confere se a jogada é valida,
+                        # se sim a Jangada vai para o outro lado, 
+                        # senão, retorna erro
                         if self.ValidacaoDireitaEsquerda() is True:
                             self.cont += 1
                         else:
@@ -79,10 +89,12 @@ class RegrasTravessia(AbstractRegrasJogo):
                             self.t1['Esquerda'].insert(0, pessoa1)
                             self.t1['Esquerda'].insert(0, pessoa2)
                             self.msg_jogador = f'Movimento inválido.'
-                    
+                    # Seleção de 1 pessoa da Esquerda
                     elif (pessoa1 in self.t1['Esquerda'] and pessoa2 is None):
                         self.t1['Esquerda'].remove(pessoa1)
                         self.t1['Direita'].insert(0, pessoa1)
+                        
+                        # Confere se a jogada é valida
                         if self.ValidacaoDireitaEsquerda() is True:
                             self.cont += 1
                         else:
@@ -92,12 +104,15 @@ class RegrasTravessia(AbstractRegrasJogo):
                     else:
                         self.msg_jogador = f'{pessoa1} e/ou {pessoa2} não encontrados.'
                 
-                else: # direita
+                else: # Jangada na direita
+                    # Seleção de 2 pessoas da Direita
                     if (pessoa1 in self.t1['Direita'] and pessoa2 in self.t1['Direita']):
                         self.t1['Direita'].remove(pessoa1)
                         self.t1['Direita'].remove(pessoa2)
                         self.t1['Esquerda'].insert(0, pessoa1)
                         self.t1['Esquerda'].insert(0, pessoa2)
+                        
+                        # Confere se a jogada é valida
                         if self.ValidacaoDireitaEsquerda() is True:
                             self.cont += 1
                         else:
@@ -107,9 +122,12 @@ class RegrasTravessia(AbstractRegrasJogo):
                             self.t1['Direita'].insert(0, pessoa2)
                             self.msg_jogador = f'Movimento inválido.'
                     
+                    # Seleção de 1 pessoa da Direita
                     elif (pessoa1 in self.t1['Direita'] and pessoa2 is None):
                         self.t1['Direita'].remove(pessoa1)
                         self.t1['Esquerda'].insert(0, pessoa1)
+
+                        # Confere se a jogada é valida
                         if self.ValidacaoDireitaEsquerda() is True:
                             self.cont += 1
                         else:
@@ -129,35 +147,37 @@ class RegrasTravessia(AbstractRegrasJogo):
         return
 
     def ValidacaoDireitaEsquerda(self) -> bool:
+        """Mais informações sobre as regras no arquivo README.md"""
         tabuleiro = self.t1
         for i in tabuleiro:
+            # Lado Esquerdo
             if i == 'Esquerda':
                 esquerda = tabuleiro['Esquerda']
-            
+                # Regras 5 e 6
                 if 'Pai' in esquerda:
                     if ('Filha1' in esquerda) or ('Filha2' in esquerda):
                         if 'Mãe' not in esquerda: return False
-
+                # Regras 3 e 4
                 if 'Mãe' in esquerda:
                     if ('Filho1' in esquerda) or ('Filho2' in esquerda):
                         if 'Pai' not in esquerda: return False
-                
+                # Regra 7
                 if 'Prisioneira' in esquerda:
                     if 'Policial' not in esquerda:
                         if len(esquerda) > 1: return False
-        
+            # Lado Direito
             if i == 'Direita':
                 direita = tabuleiro['Direita']
                 print(len(direita))
-            
+                # Regras 5 e 6
                 if 'Pai' in direita:
                     if ('Filha1' in direita) or ('Filha2' in direita):
                         if 'Mãe' not in direita: return False
-                
+                # Regras 3 e 4
                 if 'Mãe' in direita:
                     if 'Filho1' or 'Filho2' in direita:
                         if 'Pai' not in direita: return False
-                
+                # Regra 7
                 if 'Prisioneira' in direita:
                     if 'Policial' not in direita:
                         if len(direita) > 1: return False
