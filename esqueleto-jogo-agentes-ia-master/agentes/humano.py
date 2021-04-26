@@ -4,12 +4,13 @@ from percepcoes import PercepcoesJogador
 from acoes import AcaoJogador, Individuo
 
 class AgentePrepostoESHumano(AgenteAbstrato):
+    def __init__(self):
+        self.count = 0
     
     def adquirirPercepcao(self, percepcao_mundo: PercepcoesJogador):
         """ Inspeciona a disposicao dos elementos no objeto de visao e escreve
         na tela para o usuário saber o que seu agente está percebendo.
         """
-        count = 0
         print("--- Tabuleiro após a ultima jogada: ---\n")
         print("# 1-Pai ; 2-Mãe ; 3-Filho1 ; 4-Filha1 ; 5-Filho2 ; 6-Filha2 ; 7-Policial ; 8-Prisioneira #\n")
 
@@ -17,7 +18,7 @@ class AgentePrepostoESHumano(AgenteAbstrato):
 
         print("Margem Esquerda".center(81, "-"))
 
-        if count % 2 == 0:
+        if self.count % 2 == 0:
             print("Jangada \n")
         else:
             print("\n Jangada")
@@ -25,20 +26,24 @@ class AgentePrepostoESHumano(AgenteAbstrato):
         print("Margem Direita".center(81, "-"))
 
         print(percepcao_mundo.personagens_direita)
-
-        count += 1
+        
         if percepcao_mundo.mensagem_jogo:
             print(f'Mensagem do jogo: {percepcao_mundo.mensagem_jogo}')
+            self.count -= 1
+        else:
+            self.count += 1
     
     def escolherProximaAcao(self):  
-        jogada = 0
+        jogada = None
         while not jogada:
-            jogada = input("Escreva sua jogada no formato [Pessoa1,Pessoa2]\n").strip()
-            try:
+            jogada = input("Escreva sua jogada no formato [Pessoa1,Pessoa2] ou [Pessoa1]\n").strip()
+            if len(jogada) == 3:
                 p1, p2 = AgentePrepostoESHumano.parse_jogada(jogada)
-                #print(f'{p1} e {p2}')
-            except ValueError:
-                jogada = 9
+            elif len(jogada) < 3:
+                p1 = AgentePrepostoESHumano.parse_jogada(jogada)
+                p2 = 0
+            else:
+                jogada = None
                 print("Jogada entrada é inválida. Tente novamente.")
 
         return AcaoJogador.SelecionarIndividuo(p1, p2)
@@ -56,8 +61,9 @@ class AgentePrepostoESHumano(AgenteAbstrato):
             7: Individuo.Policial,
             8: Individuo.Prisioneira
         }
-        p1, p2 = entrada.split(',')
-        #if not d:
-        #   raise ValueError()
-
-        return p1, p2
+        if len(entrada) == 3:
+            p1, p2 = entrada.split(',')
+            return p1, p2
+        elif len(entrada) < 3:
+            p1 = int(entrada)
+            return p1

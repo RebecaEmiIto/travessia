@@ -21,7 +21,7 @@ class AcaoJogador():
 
     @classmethod
     def SelecionarIndividuo(cls, p1: Individuo, p2: Individuo) -> 'AcaoJogador':
-        print(f'{p1} & {p2}')
+        #print(f'{p1} & {p2}')
         return cls(AcoesJogador.Selecionar_Indivíduo, (p1, p2))
 
     def Validacao(self, p1: int, p2: int):
@@ -33,4 +33,7 @@ class AcaoJogador():
                 return False
         elif p1 == "Prisioneira":
             if p2 != "Policial":
+                return False
+        elif p1 == "Policial":
+            if p2 != "Prisioneira":
                 return False

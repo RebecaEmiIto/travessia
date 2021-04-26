@@ -14,6 +14,8 @@ class RegrasTravessia(AbstractRegrasJogo):
         t0 = {'Esquerda': ['Pai', 'Mãe', 'Filho1', 'Filha1', 'Filho2', 'Filha2', 'Policial', 'Prisioneira'],
               'Direita': []}
         self.t1 = t0
+        contador = 0
+        self.cont = contador
         self.id_personagem = {Personagens.O_JOGADOR: 0}
         self.acao_personagem = {0: None}
         self.msg_jogador = None
@@ -51,35 +53,72 @@ class RegrasTravessia(AbstractRegrasJogo):
         self.acao_personagem[id_agente] = acao
 
     def atualizarEstado(self, diferencial_tempo):
-        cont = 0
         """ Apenas neste momento o jogo é atualizado para seu próximo estado
         de acordo com as ações de cada jogador registradas anteriormente.
         """
         acao_jogador = self.acao_personagem[
             self.id_personagem[Personagens.O_JOGADOR]]
         if acao_jogador.tipo == AcoesJogador.Selecionar_Indivíduo:
+            print(acao_jogador.parametros)
             p1, p2 = acao_jogador.parametros
+            print(f'p1: {p1}')
+            print(f'p2: {p2}')
             pessoa1 = self.decodificar_pessoa(p1)
             pessoa2 = self.decodificar_pessoa(p2)
                 
-            if (pessoa1 in self.t1['Esquerda'] and pessoa2 in self.t1['Esquerda']):
-                if self.ValidacaoDireitaEsquerda() is True:
-                    if cont % 2 == 0: # esquerda
-                        self.t1['Esquerda'].remove(pessoa1)
-                        self.t1['Esquerda'].remove(pessoa2)
-                        self.t1['Direita'].insert(0, pessoa1)
-                        self.t1['Direita'].insert(0, pessoa2)
-                        cont += 1
-                    else: # direita
+            if self.cont % 2 == 0: # esquerda
+                if (pessoa1 in self.t1['Esquerda'] and pessoa2 in self.t1['Esquerda']):
+                    self.t1['Esquerda'].remove(pessoa1)
+                    self.t1['Esquerda'].remove(pessoa2)
+                    self.t1['Direita'].insert(0, pessoa1)
+                    self.t1['Direita'].insert(0, pessoa2)
+                    if self.ValidacaoDireitaEsquerda() is True:
+                        self.cont += 1
+                    else:
                         self.t1['Direita'].remove(pessoa1)
                         self.t1['Direita'].remove(pessoa2)
                         self.t1['Esquerda'].insert(0, pessoa1)
                         self.t1['Esquerda'].insert(0, pessoa2)
-                        cont += 1
+                        self.msg_jogador = f'Movimento inválido.'
+                
+                elif (pessoa1 in self.t1['Esquerda'] and pessoa2 is None):
+                    self.t1['Esquerda'].remove(pessoa1)
+                    self.t1['Direita'].insert(0, pessoa1)
+                    if self.ValidacaoDireitaEsquerda() is True:
+                        self.cont += 1
+                    else:
+                        self.t1['Direita'].remove(pessoa1)
+                        self.t1['Esquerda'].insert(0, pessoa1)
+                        self.msg_jogador = f'Movimento inválido.'
                 else:
-                    self.msg_jogador = f'Movimento inválido.'
-            else:
-                self.msg_jogador = f'{pessoa1} e/ou {pessoa2} não encontrados.'
+                    self.msg_jogador = f'{pessoa1} e/ou {pessoa2} não encontrados.'
+            
+            else: # direita
+                if (pessoa1 in self.t1['Direita'] and pessoa2 in self.t1['Direita']):
+                    self.t1['Direita'].remove(pessoa1)
+                    self.t1['Direita'].remove(pessoa2)
+                    self.t1['Esquerda'].insert(0, pessoa1)
+                    self.t1['Esquerda'].insert(0, pessoa2)
+                    if self.ValidacaoDireitaEsquerda() is True:
+                        self.cont += 1
+                    else:
+                        self.t1['Esquerda'].remove(pessoa1)
+                        self.t1['Esquerda'].remove(pessoa2)
+                        self.t1['Direita'].insert(0, pessoa1)
+                        self.t1['Direita'].insert(0, pessoa2)
+                        self.msg_jogador = f'Movimento inválido.'
+                
+                elif (pessoa1 in self.t1['Direita'] and pessoa2 is None):
+                    self.t1['Direita'].remove(pessoa1)
+                    self.t1['Esquerda'].insert(0, pessoa1)
+                    if self.ValidacaoDireitaEsquerda() is True:
+                        self.cont += 1
+                    else:
+                        self.t1['Esquerda'].remove(pessoa1)
+                        self.t1['Direita'].insert(0, pessoa1)
+                        self.msg_jogador = f'Movimento inválido.'
+                else:
+                    self.msg_jogador = f'{pessoa1} e/ou {pessoa2} não encontrados.'
         else:
             self.msg_jogador = f'Ação especificada inválida.'    
             
@@ -94,12 +133,10 @@ class RegrasTravessia(AbstractRegrasJogo):
     def ValidacaoDireitaEsquerda(self) -> bool:
         tabuleiro = self.t1
         for i in tabuleiro:
-            
             if i == "Esquerda":
                 esquerda = tabuleiro["Esquerda"]
             
                 for j in range(len(esquerda)):
-            
                     if esquerda[j] == "Pai":
                         if ("Filha1" in esquerda) or ("Filha2" in esquerda):
                             if "Mãe" in esquerda: return True
@@ -116,26 +153,27 @@ class RegrasTravessia(AbstractRegrasJogo):
                         else: return False
             
             if i == "Direita":
-                esquerda = tabuleiro["Esquerda"]
+                direita = tabuleiro["Direita"]
             
-                for j in range(len(esquerda)):
-                    if esquerda[j] == "Pai":
-                        if "Filha1" or "Filha2" in esquerda:
-                            if "Mae" in esquerda: return True
+                for j in range(len(direita)):
+                    if direita[j] == "Pai":
+                        if "Filha1" or "Filha2" in direita:
+                            if "Mãe" in direita: return True
                             else: return False
                     
-                    if esquerda[j] == "Mae":
-                        if "Filho1" or "Filho2" in esquerda:
-                            if "Pai" in esquerda: return True
+                    if direita[j] == "Mãe":
+                        if "Filho1" or "Filho2" in direita:
+                            if "Pai" in direita: return True
                             else: return False
                     
-                    if esquerda[j] == "Prisioneira":
-                        if "Policial" in esquerda: return True
-                        elif len(esquerda) == 1: return True
+                    if direita[j] == "Prisioneira":
+                        if "Policial" in direita: return True
+                        elif len(direita) == 1: return True
                         else: return False
 
     @staticmethod
     def decodificar_pessoa(p):
+        print(f'p: {p}')
         pessoa = int(p)
         if pessoa == 1:
             return 'Pai'
@@ -153,7 +191,8 @@ class RegrasTravessia(AbstractRegrasJogo):
             return 'Policial'
         elif pessoa == 8:
             return 'Prisioneira'
-
+        elif pessoa == 0:
+            return
             
 
 def construir_jogo(*args, **kwargs):
@@ -161,4 +200,3 @@ def construir_jogo(*args, **kwargs):
     parâmetros. Pode-se mudar à vontade a assinatura do método.
     """
     return RegrasTravessia()
-
