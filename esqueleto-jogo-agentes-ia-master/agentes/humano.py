@@ -12,7 +12,7 @@ class AgentePrepostoESHumano(AgenteAbstrato):
         na tela para o usuário saber o que seu agente está percebendo.
         """
         print('--- Tabuleiro após a ultima jogada: ---\n')
-        print('# 1-Pai ; 2-Mãe ; 3-Filho1 ; 4-Filha1 ; 5-Filho2 ; 6-Filha2 ; 7-Policial ; 8-Prisioneira #\n')
+        print('|[ 1-Pai || 2-Mãe || 3-Filho1 || 4-Filha1 || 5-Filho2 || 6-Filha2 || 7-Policial || 8-Prisioneira ]|\n')
 
         print(percepcao_mundo.personagens_esquerda)
 

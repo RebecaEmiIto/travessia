@@ -1,16 +1,18 @@
+import Time
 from typing import Tuple
-from .abstrato import AgenteAbstrato
 from percepcoes import PercepcoesJogador
 from acoes import AcaoJogador 
+from .abstrato import AgenteAbstrato
 from .problemas import ProblemaTravessia
-
+from .buscadores.busca import busca_arvore_bfs
 
 class AgenteAutomaticoBfs(AgenteAbstrato):
     def __init__(self):
         super.__init__()
         self.count = 0
 
-        self.ProblemaTravessia
+        self.problema: ProblemaTravessia = None
+        self.solucao: list = None
     
     def adquirirPercepcao(self, percepcao_mundo: PercepcoesJogador):
         AgenteAutomaticoBfs.desenhar_tabuleiro(percepcao_mundo)
@@ -18,6 +20,7 @@ class AgenteAutomaticoBfs(AgenteAbstrato):
         if not self.solucao:
             self.problema = ProblemaTravessia() #TODO: # percepcao_mundo)
 
+    @staticmethod
     def desenhar_tabuleiro(percepcao_mundo: PercepcoesJogador):
         """ Inspeciona a disposicao dos elementos no objeto de visao e escreve
         na tela para o usuário saber o que seu agente está percebendo.
@@ -44,14 +47,19 @@ class AgenteAutomaticoBfs(AgenteAbstrato):
             self.count += 1
 
     def escolherProximaAcao(self):  
-        if not self.seq:
-            self.formularObjetivo()
-            self.formularProblema()
-            self.busca()
-            if not self.seq:
-                return None
-        acao = self.seq.pop(0)
-        return acao
+        if not self.solucao:
+            no_solucao = busca_arvore_bfs(self.problema)
+            self.solucao = no_solucao.caminho_acoes()
+            print(len(self.solucao), self.solucao)
+            if not self.solucao:
+                raise Exception("Agente BFS não encontrou solução.")
+        
+        acao = self.solucao.pop(0)
+        print(f"Próxima ação é {acao}.")
+        time.sleep(2)
+
+        p1, p2 = AgenteAutomaticoBfs.traduzir_acao_jogo(acao)
+        return AcaoJogador.SelecionarIndividuo(p1, p2)
 
     @staticmethod
     def parse_jogada(entrada: str) -> Tuple[int, int]:
