@@ -61,31 +61,120 @@ class ProblemaTravessia:
     
     @staticmethod
     def resultado(estado: EstadoRestaUm, acao: Mover) -> EstadoRestaUm:
-        estado_resultante = EstadoRestaUm(set(estado.tabuleiro))
-        x, y = acao.bolinha.x, acao.bolinha.y
-        
-        estado_resultante.tabuleiro.discard(acao.bolinha)
-        if acao.direcao == 'cima':
-            estado_resultante.tabuleiro.discard(Bolinha(x, y+1))
-            estado_resultante.tabuleiro.add(Bolinha(x, y+2))
-        
-        elif acao.direcao == 'baixo':
-            estado_resultante.tabuleiro.discard(Bolinha(x, y-1))
-            estado_resultante.tabuleiro.add(Bolinha(x, y-2))
+        estado_resultante = EstadoTravessia(set(estado.tabuleiro))
+        p1, p2 = acao.personagem.p1, acao.personagem.p2
+        stado_resultante.tabuleiro.add(Personagens(p1, p2))
 
-        elif acao.direcao == 'direita':
-            estado_resultante.tabuleiro.discard(Bolinha(x+1, y))
-            estado_resultante.tabuleiro.add(Bolinha(x+2, y))
-        
-        elif acao.direcao == 'esquerda':
-            estado_resultante.tabuleiro.discard(Bolinha(x-1, y))
-            estado_resultante.tabuleiro.add(Bolinha(x-2, y))
-        
-        else:
-            raise ValueError("Movimento especificado inválido, cheater!")
-        
-        return estado_resultante
+        if pessoa1 == 'Pai' or pessoa1 == 'Mãe' or pessoa1 == 'Policial' \
+            or pessoa2 == 'Pai' or pessoa2 == 'Mãe' or pessoa2 == 'Policial':
+
+                if self.cont % 2 == 0: # Jangada na esquerda
+                    # Seleção de 2 pessoas da Esquerda
+                    if (pessoa1 in self.t1['Esquerda'] and pessoa2 in self.t1['Esquerda']):
+                        self.t1['Esquerda'].remove(pessoa1)
+                        self.t1['Esquerda'].remove(pessoa2)
+                        self.t1['Direita'].insert(0, pessoa1)
+                        self.t1['Direita'].insert(0, pessoa2)
+
+                        # Confere se a jogada é valida,
+                        # se sim a Jangada vai para o outro lado, 
+                        # senão, retorna erro
+                        if self.ValidacaoDireitaEsquerda() is True:
+                            self.cont += 1
+                        else:
+                            self.t1['Direita'].remove(pessoa1)
+                            self.t1['Direita'].remove(pessoa2)
+                            self.t1['Esquerda'].insert(0, pessoa1)
+                            self.t1['Esquerda'].insert(0, pessoa2)
+                            raise ValueError("Movimento especificado inválido, cheater!")
+                    # Seleção de 1 pessoa da Esquerda
+                    elif (pessoa1 in self.t1['Esquerda'] and pessoa2 is None):
+                        self.t1['Esquerda'].remove(pessoa1)
+                        self.t1['Direita'].insert(0, pessoa1)
+                        
+                        # Confere se a jogada é valida
+                        if self.ValidacaoDireitaEsquerda() is True:
+                            self.cont += 1
+                        else:
+                            self.t1['Direita'].remove(pessoa1)
+                            self.t1['Esquerda'].insert(0, pessoa1)
+                            raise ValueError("Movimento especificado inválido, cheater!")
+                    else:
+                        raise ValueError("Movimento especificado inválido, cheater!")
+                
+                else: # Jangada na direita
+                    # Seleção de 2 pessoas da Direita
+                    if (pessoa1 in self.t1['Direita'] and pessoa2 in self.t1['Direita']):
+                        self.t1['Direita'].remove(pessoa1)
+                        self.t1['Direita'].remove(pessoa2)
+                        self.t1['Esquerda'].insert(0, pessoa1)
+                        self.t1['Esquerda'].insert(0, pessoa2)
+                        
+                        # Confere se a jogada é valida
+                        if self.ValidacaoDireitaEsquerda() is True:
+                            self.cont += 1
+                        else:
+                            self.t1['Esquerda'].remove(pessoa1)
+                            self.t1['Esquerda'].remove(pessoa2)
+                            self.t1['Direita'].insert(0, pessoa1)
+                            self.t1['Direita'].insert(0, pessoa2)
+                            raise ValueError("Movimento especificado inválido, cheater!")
+                    
+                    # Seleção de 1 pessoa da Direita
+                    elif (pessoa1 in self.t1['Direita'] and pessoa2 is None):
+                        self.t1['Direita'].remove(pessoa1)
+                        self.t1['Esquerda'].insert(0, pessoa1)
+
+                        # Confere se a jogada é valida
+                        if self.ValidacaoDireitaEsquerda() is True:
+                            self.cont += 1
+                        else:
+                            self.t1['Esquerda'].remove(pessoa1)
+                            self.t1['Direita'].insert(0, pessoa1)
+                            raise ValueError("Movimento especificado inválido, cheater!")
+                    else:
+                        raise ValueError("Movimento especificado inválido, cheater!")        
+            else:
+                raise ValueError("Movimento especificado inválido, cheater!")
+        return estado_resultante.tabuleiro
     
+        def ValidacaoDireitaEsquerda(self) -> bool:
+        """Mais informações sobre as regras no arquivo README.md"""
+        tabuleiro = self.t1
+        for i in tabuleiro:
+            # Lado Esquerdo
+            if i == 'Esquerda':
+                esquerda = tabuleiro['Esquerda']
+                # Regras 5 e 6
+                if 'Pai' in esquerda:
+                    if ('Filha1' in esquerda) or ('Filha2' in esquerda):
+                        if 'Mãe' not in esquerda: return False
+                # Regras 3 e 4
+                if 'Mãe' in esquerda:
+                    if ('Filho1' in esquerda) or ('Filho2' in esquerda):
+                        if 'Pai' not in esquerda: return False
+                # Regra 7
+                if 'Prisioneira' in esquerda:
+                    if 'Policial' not in esquerda:
+                        if len(esquerda) > 1: return False
+            # Lado Direito
+            if i == 'Direita':
+                direita = tabuleiro['Direita']
+                print(len(direita))
+                # Regras 5 e 6
+                if 'Pai' in direita:
+                    if ('Filha1' in direita) or ('Filha2' in direita):
+                        if 'Mãe' not in direita: return False
+                # Regras 3 e 4
+                if 'Mãe' in direita:
+                    if 'Filho1' or 'Filho2' in direita:
+                        if 'Pai' not in direita: return False
+                # Regra 7
+                if 'Prisioneira' in direita:
+                    if 'Policial' not in direita:
+                        if len(direita) > 1: return False
+        return True
+
     @staticmethod
     def teste_objetivo(estado: EstadoRestaUm) -> bool:
         return len(estado.tabuleiro) == 1
