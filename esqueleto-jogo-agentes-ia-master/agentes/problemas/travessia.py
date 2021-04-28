@@ -3,11 +3,11 @@ from dataclasses import dataclass
 
 @dataclass
 class Personagens:
-    p1: str
-    p2: str
+    p1: int
+    p2: int
 
-    def __hash__(self) -> int:
-        return hash(self.p1) + hash(self.p2)
+#    def __hash__(self) -> int:
+#        return hash(self.p1) + hash(self.p2)
     
     def __str__(self) -> str:
         return f'Pessoa 1: ({self.p1} || Pessoa 2: {self.p2})'
@@ -21,125 +21,119 @@ class Mover:
     personagens: Personagens
 
     def __str__(self) -> str:
-        return f'Mover({self.personagens} para o outro lado do Rio)'
+        return f'Mover {self.personagens} para o outro lado do Rio'
 
 class ProblemaTravessia:
 
     @staticmethod
     def estado_inicial(*argd, **kwargs) -> EstadoTravessia:
-        t0 = {'Esquerda': ['Pai', 'Mãe', 'Filho1', 'Filha1', 'Filho2', 'Filha2', 'Policial', 'Prisioneira'],
-              'Direita': []}
-        return t0[kwargs.get('nivel', 'completo')]
+        nivel = {
+            't0': EstadoTravessia({
+                'Esquerda': ['Pai', 'Mãe', 'Filho1', 'Filha1', 'Filho2', 'Filha2', 'Policial', 'Prisioneira'],
+                'Direita': []
+            })
+        }
+        return nivel[kwargs.get('nivel', 't0')]
     
     @staticmethod
-    def acoes(estado: EstadoRestaUm) -> Sequence[Mover]:
+    def acoes(estado: EstadoTravessia) -> Sequence[Mover]:
         acoes_possiveis = list()
-        for bolinha in estado.tabuleiro:
-            x, y = bolinha.x, bolinha.y
+        for individuo in estado.tabuleiro:
 
-            if Bolinha(x+1,y) in estado.tabuleiro and Bolinha(x+2,y) not in estado.tabuleiro:
-                x_max = 3 if abs(y) < 2 else 1
-                if x+2 <= x_max:
-                    acoes_possiveis.append(Mover(bolinha, 'direita'))
-            
-            if Bolinha(x-1,y) in estado.tabuleiro and Bolinha(x-2,y) not in estado.tabuleiro:
-                x_min = -3 if abs(y) < 2 else -1
-                if x-2 >= x_min:
-                    acoes_possiveis.append(Mover(bolinha, 'esquerda'))
-            
-            if Bolinha(x,y+1) in estado.tabuleiro and Bolinha(x,y+2) not in estado.tabuleiro:
-                y_max = 3 if abs(x) < 2 else 1
-                if y+2 <= y_max:
-                    acoes_possiveis.append(Mover(bolinha, 'cima'))
-            
-            if Bolinha(x,y-1) in estado.tabuleiro and Bolinha(x,y-2) not in estado.tabuleiro:
-                y_min = -3 if abs(x) < 2 else -1
-                if y-2 >= y_min:
-                    acoes_possiveis.append(Mover(bolinha, 'baixo'))
-        
+            direita = estado.tabuleiro['Direita']
+            esquerda = estado.tabuleiro['Esquerda']
+
+            if individuo in esquerda:
+                pessoa1, pessoa2 = esquerda.p1, esquerda.p2
+                if Personagens(pessoa1, pessoa2) in esquerda or Personagens(pessoa1) in esquerda:
+                    acoes_possiveis.append(Mover(individuo))
+                    
+            if individuo in direita:
+                if Personagens(pessoa1, pessoa2) in direita or Personagens(pessoa1) in direita:
+                    acoes_possiveis.append(Mover(individuo))
+
         return acoes_possiveis
     
     @staticmethod
-    def resultado(estado: EstadoRestaUm, acao: Mover) -> EstadoRestaUm:
+    def resultado(estado: EstadoTravessia, acao: Mover) -> EstadoTravessia:
         estado_resultante = EstadoTravessia(set(estado.tabuleiro))
         p1, p2 = acao.personagem.p1, acao.personagem.p2
-        stado_resultante.tabuleiro.add(Personagens(p1, p2))
+        estado_resultante.tabuleiro.add(Personagens(p1, p2))
+        contador = 0
+        if p1 == 'Pai' or p1 == 'Mãe' or p1 == 'Policial' \
+            or p2 == 'Pai' or p2 == 'Mãe' or p2 == 'Policial':
 
-        if pessoa1 == 'Pai' or pessoa1 == 'Mãe' or pessoa1 == 'Policial' \
-            or pessoa2 == 'Pai' or pessoa2 == 'Mãe' or pessoa2 == 'Policial':
-
-                if self.cont % 2 == 0: # Jangada na esquerda
+                if contador % 2 == 0: # Jangada na esquerda
                     # Seleção de 2 pessoas da Esquerda
-                    if (pessoa1 in self.t1['Esquerda'] and pessoa2 in self.t1['Esquerda']):
-                        self.t1['Esquerda'].remove(pessoa1)
-                        self.t1['Esquerda'].remove(pessoa2)
-                        self.t1['Direita'].insert(0, pessoa1)
-                        self.t1['Direita'].insert(0, pessoa2)
+                    if (p1 in estado_resultante['Esquerda'] and p2 in estado_resultante['Esquerda']):
+                        estado_resultante['Esquerda'].remove(p1)
+                        estado_resultante['Esquerda'].remove(p2)
+                        estado_resultante['Direita'].insert(0, p1)
+                        estado_resultante['Direita'].insert(0, p2)
 
                         # Confere se a jogada é valida,
                         # se sim a Jangada vai para o outro lado, 
                         # senão, retorna erro
-                        if self.ValidacaoDireitaEsquerda() is True:
-                            self.cont += 1
+                        if EstadoTravessia.ValidacaoDireitaEsquerda() is True:
+                            contador += 1
                         else:
-                            self.t1['Direita'].remove(pessoa1)
-                            self.t1['Direita'].remove(pessoa2)
-                            self.t1['Esquerda'].insert(0, pessoa1)
-                            self.t1['Esquerda'].insert(0, pessoa2)
+                            estado_resultante['Direita'].remove(p1)
+                            estado_resultante['Direita'].remove(p2)
+                            estado_resultante['Esquerda'].insert(0, p1)
+                            estado_resultante['Esquerda'].insert(0, p2)
                             raise ValueError("Movimento especificado inválido, cheater!")
                     # Seleção de 1 pessoa da Esquerda
-                    elif (pessoa1 in self.t1['Esquerda'] and pessoa2 is None):
-                        self.t1['Esquerda'].remove(pessoa1)
-                        self.t1['Direita'].insert(0, pessoa1)
+                    elif (p1 in estado_resultante['Esquerda'] and p2 is None):
+                        estado_resultante['Esquerda'].remove(p1)
+                        estado_resultante['Direita'].insert(0, p1)
                         
                         # Confere se a jogada é valida
-                        if self.ValidacaoDireitaEsquerda() is True:
-                            self.cont += 1
+                        if EstadoTravessia.ValidacaoDireitaEsquerda() is True:
+                            contador += 1
                         else:
-                            self.t1['Direita'].remove(pessoa1)
-                            self.t1['Esquerda'].insert(0, pessoa1)
+                            estado_resultante['Direita'].remove(p1)
+                            estado_resultante['Esquerda'].insert(0, p1)
                             raise ValueError("Movimento especificado inválido, cheater!")
                     else:
                         raise ValueError("Movimento especificado inválido, cheater!")
                 
                 else: # Jangada na direita
                     # Seleção de 2 pessoas da Direita
-                    if (pessoa1 in self.t1['Direita'] and pessoa2 in self.t1['Direita']):
-                        self.t1['Direita'].remove(pessoa1)
-                        self.t1['Direita'].remove(pessoa2)
-                        self.t1['Esquerda'].insert(0, pessoa1)
-                        self.t1['Esquerda'].insert(0, pessoa2)
+                    if (p1 in estado_resultante['Direita'] and p2 in estado_resultante['Direita']):
+                        estado_resultante['Direita'].remove(p1)
+                        estado_resultante['Direita'].remove(p2)
+                        estado_resultante['Esquerda'].insert(0, p1)
+                        estado_resultante['Esquerda'].insert(0, p2)
                         
                         # Confere se a jogada é valida
-                        if self.ValidacaoDireitaEsquerda() is True:
-                            self.cont += 1
+                        if EstadoTravessia.ValidacaoDireitaEsquerda() is True:
+                            contador += 1
                         else:
-                            self.t1['Esquerda'].remove(pessoa1)
-                            self.t1['Esquerda'].remove(pessoa2)
-                            self.t1['Direita'].insert(0, pessoa1)
-                            self.t1['Direita'].insert(0, pessoa2)
+                            estado_resultante['Esquerda'].remove(p1)
+                            estado_resultante['Esquerda'].remove(p2)
+                            estado_resultante['Direita'].insert(0, p1)
+                            estado_resultante['Direita'].insert(0, p2)
                             raise ValueError("Movimento especificado inválido, cheater!")
                     
                     # Seleção de 1 pessoa da Direita
-                    elif (pessoa1 in self.t1['Direita'] and pessoa2 is None):
-                        self.t1['Direita'].remove(pessoa1)
-                        self.t1['Esquerda'].insert(0, pessoa1)
+                    elif (p1 in estado_resultante['Direita'] and p2 is None):
+                        estado_resultante['Direita'].remove(p1)
+                        estado_resultante['Esquerda'].insert(0, p1)
 
                         # Confere se a jogada é valida
-                        if self.ValidacaoDireitaEsquerda() is True:
-                            self.cont += 1
+                        if EstadoTravessia.ValidacaoDireitaEsquerda() is True:
+                            contador += 1
                         else:
-                            self.t1['Esquerda'].remove(pessoa1)
-                            self.t1['Direita'].insert(0, pessoa1)
+                            estado_resultante['Esquerda'].remove(p1)
+                            estado_resultante['Direita'].insert(0, p1)
                             raise ValueError("Movimento especificado inválido, cheater!")
                     else:
                         raise ValueError("Movimento especificado inválido, cheater!")        
-            else:
-                raise ValueError("Movimento especificado inválido, cheater!")
+        else:
+            raise ValueError("Movimento especificado inválido, cheater!")
         return estado_resultante.tabuleiro
     
-        def ValidacaoDireitaEsquerda(self) -> bool:
-        """Mais informações sobre as regras no arquivo README.md"""
+    def ValidacaoDireitaEsquerda(self) -> bool:
         tabuleiro = self.t1
         for i in tabuleiro:
             # Lado Esquerdo
@@ -176,11 +170,11 @@ class ProblemaTravessia:
         return True
 
     @staticmethod
-    def teste_objetivo(estado: EstadoRestaUm) -> bool:
+    def teste_objetivo(estado: EstadoTravessia) -> bool:
         return len(estado.tabuleiro) == 1
     
     @staticmethod
-    def custo(inicial: EstadoRestaUm, acao: Mover, 
-              resultante: EstadoRestaUm) -> int:
+    def custo(inicial: EstadoTravessia, acao: Mover,
+              resultante: EstadoTravessia) -> int:
         """Custo em quantidade de jogadas"""
         return 1
