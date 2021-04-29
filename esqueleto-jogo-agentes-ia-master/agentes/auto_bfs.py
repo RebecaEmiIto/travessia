@@ -1,7 +1,9 @@
 import time
 from typing import Tuple
+
 from percepcoes import PercepcoesJogador
 from acoes import AcaoJogador, Individuo
+
 from .abstrato import AgenteAbstrato
 from .problemas.travessia import ProblemaTravessia
 from .buscadores.busca import busca_arvore_bfs
@@ -9,8 +11,8 @@ from .buscadores.busca import busca_arvore_bfs
 class AgenteAutomaticoBfs(AgenteAbstrato):
     def __init__(self):
         super().__init__()
-        self.count = 0
 
+        self.count = 0
         self.problema: ProblemaTravessia = None
         self.solucao: list = None
     
@@ -19,7 +21,7 @@ class AgenteAutomaticoBfs(AgenteAbstrato):
         self.count += 1
 
         if not self.solucao:
-            self.problema = ProblemaTravessia() #TODO: # percepcao_mundo)
+            self.problema = ProblemaTravessia()  # TODO: # percepcao_mundo)
 
     @staticmethod
     def desenhar_tabuleiro(count, percepcao_mundo: PercepcoesJogador):
@@ -46,19 +48,21 @@ class AgenteAutomaticoBfs(AgenteAbstrato):
             print(f'Mensagem do jogo: {percepcao_mundo.mensagem_jogo}')
 
 
-    def escolherProximaAcao(self):  
+    def escolherProximaAcao(self):
         if not self.solucao:
             no_solucao = busca_arvore_bfs(self.problema)
+            print(f'1')
             self.solucao = no_solucao.caminho_acoes()
+            print(f'2')
             print(len(self.solucao), self.solucao)
             if not self.solucao:
-                raise Exception('Agente BFS não encontrou solução.')
+                raise Exception("Agente BFS não encontrou solução.")
         
         acao = self.solucao.pop(0)
         print(f'Próxima ação é {acao}.')
         time.sleep(2)
 
-        p1, p2 = AgenteAutomaticoBfs.traduzir_acao_jogo(acao)
+        p1, p2 = AgenteAutomaticoBfs.parse_jogada(acao)
         return AcaoJogador.SelecionarIndividuo(p1, p2)
 
     @staticmethod
