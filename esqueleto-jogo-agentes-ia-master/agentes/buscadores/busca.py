@@ -57,5 +57,28 @@ def busca_em_arvore(problema) -> No:
     #raise ProblemaSemSolucaoException()
     print(f'alo')
 
+def busca_em_dfs(problema) -> No:
+    """ Retorna uma solucao ou falha"""
+    borda = [No(problema.estado_inicial())]
+    while borda:
+        #print(f'kkkk {borda}')
+        folha = borda.pop()
+        # print(f"Altura {folha.calcular_profundidade()}, com {len(borda)} nós na borda.")
+        if problema.teste_objetivo(folha.estado):
+            print(f'folha sdfs')
+            return folha
+
+        # print(f'Não era objetivo. Ações adjacentes são {problema.acoes(folha.estado)}.')
+        for acao in problema.acoes(folha.estado):
+            expandido = No.criar_no_filho(problema, folha, acao)
+            borda.append(expandido)
+            #print(f'kkkk {borda}')
+
+            # print(f'Enfileirado {expandido}')
+
+    #raise ProblemaSemSolucaoException()
+    print(f'alo')
+
 
 busca_arvore_bfs = busca_em_arvore
+busca_arvore_dfs = busca_em_dfs
