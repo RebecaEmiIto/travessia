@@ -6,7 +6,7 @@ from acoes import AcaoJogador, Individuo
 
 from .abstrato import AgenteAbstrato
 from .problemas.travessia import ProblemaTravessia
-from .buscadores.busca import busca_arvore_bfs
+from .buscadores.busca import busca_arvore_dfs
 
 class AgenteAutomaticoBfs(AgenteAbstrato):
     def __init__(self):
@@ -22,7 +22,7 @@ class AgenteAutomaticoBfs(AgenteAbstrato):
 
         if not self.solucao:
             self.problema = ProblemaTravessia()  # TODO: # percepcao_mundo)
-        
+
     @staticmethod
     def desenhar_tabuleiro(count, percepcao_mundo: PercepcoesJogador):
         """ Inspeciona a disposicao dos elementos no objeto de visao e escreve
@@ -50,7 +50,7 @@ class AgenteAutomaticoBfs(AgenteAbstrato):
 
     def escolherProximaAcao(self):
         if not self.solucao:
-            no_solucao = busca_arvore_bfs(self.problema)
+            no_solucao = busca_arvore_dfs(self.problema)
             print(f'1')
             self.solucao = no_solucao.caminho_acoes()
             print(f'2')
