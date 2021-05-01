@@ -28,6 +28,7 @@ class No():
     @classmethod
     def criar_no_filho(cls, problema, pai, acao):
         novo_estado = problema.resultado(pai.estado, acao)
+        print(f'novo estado = {novo_estado}')
         custo_solucao = pai.custo_solucao + problema.custo(pai.estado, acao, novo_estado)
         return cls(novo_estado, acao, custo_solucao, pai)
 
@@ -41,44 +42,50 @@ def busca_em_arvore(problema) -> No:
     while borda:
         #print(f'kkkk {borda}')
         folha = borda.pop(0)
-        # print(f"Altura {folha.calcular_profundidade()}, com {len(borda)} nós na borda.")
+        print(f'folha = {folha}')
+        #print(f"Altura {folha.estado}, com {len(borda)} nós na borda.")
         if problema.teste_objetivo(folha.estado):
             print(f'folha sdfs')
             return folha
 
+        #print(f'estado = {estado} e acao = {acao}')
         # print(f'Não era objetivo. Ações adjacentes são {problema.acoes(folha.estado)}.')
-        for acao in problema.acoes(folha.estado):
+        print(f'pajncsdv {problema.acoes(folha.estado)}')
+        lista = []
+        lista.append(folha)
+        for acao in lista:
+            print(f'kkkk {borda}')
             expandido = No.criar_no_filho(problema, folha, acao)
             borda.append(expandido)
-            #print(f'kkkk {borda}')
+
 
             # print(f'Enfileirado {expandido}')
 
-    #raise ProblemaSemSolucaoException()
+    raise ProblemaSemSolucaoException()
     print(f'alo')
+busca_arvore_bfs = busca_em_arvore
 
 def busca_em_dfs(problema) -> No:
     """ Retorna uma solucao ou falha"""
     borda = [No(problema.estado_inicial())]
     while borda:
-        #print(f'kkkk {borda}')
         folha = borda.pop()
         # print(f"Altura {folha.calcular_profundidade()}, com {len(borda)} nós na borda.")
         if problema.teste_objetivo(folha.estado):
             print(f'folha sdfs')
             return folha
 
-        # print(f'Não era objetivo. Ações adjacentes são {problema.acoes(folha.estado)}.')
+        #print(f'Não era objetivo. Ações adjacentes são {problema.acoes(folha.estado)}.')
         for acao in problema.acoes(folha.estado):
+            #print(f'Não era objetivo. Ações adjacentes são {problema.acoes(folha.estado)}.')
             expandido = No.criar_no_filho(problema, folha, acao)
             borda.append(expandido)
             #print(f'kkkk {borda}')
 
             # print(f'Enfileirado {expandido}')
 
-    #raise ProblemaSemSolucaoException()
-    print(f'alo')
+    raise ProblemaSemSolucaoException()
+    print(f'alo pao')
 
 
-busca_arvore_bfs = busca_em_arvore
 busca_arvore_dfs = busca_em_dfs

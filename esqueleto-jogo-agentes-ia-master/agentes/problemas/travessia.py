@@ -6,8 +6,8 @@ class Personagens:
     p1: int
     p2: int
 
-#    def __hash__(self) -> int:
-#        return hash(self.p1) + hash(self.p2)
+    def __hash__(self) -> int:
+        return hash(self.p1) + hash(self.p2)
     
     def __str__(self) -> str:
         return f'Pessoa 1: ({self.p1} || Pessoa 2: {self.p2})'
@@ -57,7 +57,7 @@ class ProblemaTravessia:
     @staticmethod
     def resultado(estado: EstadoTravessia, acao: Mover) -> EstadoTravessia:
         estado_resultante = EstadoTravessia(set(estado.tabuleiro))
-        p1, p2 = acao.personagem.p1, acao.personagem.p2
+        p1, p2 = acao.personagens.p1, acao.personagens.p2
         estado_resultante.tabuleiro.add(Personagens(p1, p2))
         contador = 0
         if p1 == 'Pai' or p1 == 'Mãe' or p1 == 'Policial' \
@@ -131,7 +131,8 @@ class ProblemaTravessia:
                         raise ValueError("Movimento especificado inválido, cheater!")        
         else:
             raise ValueError("Movimento especificado inválido, cheater!")
-        return estado_resultante.tabuleiro
+        print(f'estado resultante tabu = {estado_resultante}')
+        return estado_resultante
     
     def ValidacaoDireitaEsquerda(self) -> bool:
         tabuleiro = self.t1
@@ -171,6 +172,7 @@ class ProblemaTravessia:
 
     @staticmethod
     def teste_objetivo(estado: EstadoTravessia) -> bool:
+        print(f'tamanho = {len(estado.tabuleiro)}')
         return len(estado.tabuleiro) == 1
     
     @staticmethod

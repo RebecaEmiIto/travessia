@@ -22,6 +22,7 @@ class AgenteAutomaticoBfs(AgenteAbstrato):
 
         if not self.solucao:
             self.problema = ProblemaTravessia()  # TODO: # percepcao_mundo)
+            print(f'problema = {self.problema}')
         
     @staticmethod
     def desenhar_tabuleiro(count, percepcao_mundo: PercepcoesJogador):
@@ -51,12 +52,12 @@ class AgenteAutomaticoBfs(AgenteAbstrato):
     def escolherProximaAcao(self):
         if not self.solucao:
             no_solucao = busca_arvore_bfs(self.problema)
-            print(f'1')
+            print(f'busca_arvore_bfs = {busca_arvore_bfs}')
             self.solucao = no_solucao.caminho_acoes()
-            print(f'2')
-            print(len(self.solucao), self.solucao)
-            if not self.solucao:
-                raise Exception("Agente BFS não encontrou solução.")
+            print(f'jfsdnflksn 2')
+            print(f'alooooo kk{len(self.solucao), self.solucao}')
+            #if not self.solucao:
+            #    raise Exception("Agente BFS não encontrou solução.")
         
         acao = self.solucao.pop(0)
         print(f'Próxima ação é {acao}.')

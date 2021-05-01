@@ -26,23 +26,20 @@ def iniciar_jogo():
     elif escolha == 2:
         escolha2 = int(input("1- AUTO_BFS || 2- AUTO_DFS "))
         if escolha2 == 1:
-            pass
-            #agente_jogador = construir_agente(TiposAgentes.AUTO_BFS, Personagens.O_JOGADOR)
+            agente_jogador = construir_agente(TiposAgentes.AUTO_BFS, Personagens.O_JOGADOR)
         elif escolha2 == 2:
-            pass
-            # agente_jogador = construir_agente(TiposAgentes.AUTO_DFS, Personagens.O_JOGADOR)
+            agente_jogador = construir_agente(TiposAgentes.AUTO_DFS, Personagens.O_JOGADOR)
     
     tempo_de_jogo = 0
     while not jogo.isFim():
-        
         # Mostrar mundo ao jogador
         ambiente_perceptivel = jogo.gerarCampoVisao(personagem_jogador)
         agente_jogador.adquirirPercepcao(ambiente_perceptivel)
-        
+
         # Decidir jogada e apresentar ao jogo
         acao = agente_jogador.escolherProximaAcao()
         jogo.registrarProximaAcao(personagem_jogador, acao)
-
+        print("estou aki")
         # Atualizar jogo
         tempo_corrente = ler_tempo()
         jogo.atualizarEstado(tempo_corrente - tempo_de_jogo)
