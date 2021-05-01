@@ -8,7 +8,7 @@ from .abstrato import AgenteAbstrato
 from .problemas.travessia import ProblemaTravessia
 from .buscadores.busca import busca_arvore_dfs
 
-class AgenteAutomaticoBfs(AgenteAbstrato):
+class AgenteAutomaticoDfs(AgenteAbstrato):
     def __init__(self):
         super().__init__()
 
