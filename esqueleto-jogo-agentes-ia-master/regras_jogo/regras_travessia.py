@@ -2,7 +2,6 @@ import sys
 from typing import Tuple
 from .regras_abstratas import AbstractRegrasJogo
 from .personagens import Personagens
-# from .resta_um import TabuleiroRestaUm,
 from percepcoes import PercepcoesJogador
 from acoes import AcoesJogador, Individuo
 

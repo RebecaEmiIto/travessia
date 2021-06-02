@@ -39,7 +39,6 @@ def iniciar_jogo():
         # Decidir jogada e apresentar ao jogo
         acao = agente_jogador.escolherProximaAcao()
         jogo.registrarProximaAcao(personagem_jogador, acao)
-        print("estou aki")
         # Atualizar jogo
         tempo_corrente = ler_tempo()
         jogo.atualizarEstado(tempo_corrente - tempo_de_jogo)

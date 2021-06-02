@@ -14,7 +14,7 @@ class Personagens:
 
 @dataclass
 class EstadoTravessia:
-    tabuleiro: Personagens
+    tabuleiro: Set[Personagens]
 
 @dataclass
 class Mover:
@@ -24,12 +24,15 @@ class Mover:
         return f'Mover {self.personagens} para o outro lado do Rio'
 
 class ProblemaTravessia:
-
     @staticmethod
     def estado_inicial(*argd, **kwargs) -> EstadoTravessia:
         nivel = {
+            #'t0': EstadoTravessia({
+            #    'Esquerda': [ 1, 2, 3, 4, 5, 6, 7, 8 ],
+            #    'Direita': []
+            #})
             't0': EstadoTravessia({
-                'Esquerda': ['Pai', 'Mãe', 'Filho1', 'Filha1', 'Filho2', 'Filha2', 'Policial', 'Prisioneira'],
+                'Esquerda': [Personagens(1),Personagens(2),Personagens(3),Personagens(4),Personagens(5),Personagens(6),Personagens(7),Personagens(8)],
                 'Direita': []
             })
         }
@@ -38,26 +41,26 @@ class ProblemaTravessia:
     @staticmethod
     def acoes(estado: EstadoTravessia) -> Sequence[Mover]:
         acoes_possiveis = list()
-        for individuo in estado.tabuleiro:
-
-            direita = estado.tabuleiro['Direita']
-            esquerda = estado.tabuleiro['Esquerda']
-
-            if individuo in esquerda:
-                pessoa1, pessoa2 = esquerda.p1, esquerda.p2
-                if Personagens(pessoa1, pessoa2) in esquerda or Personagens(pessoa1) in esquerda:
-                    acoes_possiveis.append(Mover(individuo))
-                    
-            if individuo in direita:
-                if Personagens(pessoa1, pessoa2) in direita or Personagens(pessoa1) in direita:
-                    acoes_possiveis.append(Mover(individuo))
+        for individuo1 in estado.tabuleiro:
+            for individuo2 in estado.tabuleiro+1:
+                direita = estado.tabuleiro['Direita']
+                esquerda = estado.tabuleiro['Esquerda']
+                if individuo1 in esquerda:
+                    pessoa1, pessoa2 = esquerda.p1, esquerda.p2
+                    if Personagens(pessoa1, pessoa2) in esquerda or Personagens(pessoa1) in esquerda:
+                        acoes_possiveis.append(Mover(individuo1, individuo2))
+                        
+                if individuo1 in direita:
+                    if Personagens(pessoa1, pessoa2) in direita or Personagens(pessoa1) in direita:
+                        acoes_possiveis.append(Mover(individuo1, individuo2))
 
         return acoes_possiveis
     
     @staticmethod
     def resultado(estado: EstadoTravessia, acao: Mover) -> EstadoTravessia:
         estado_resultante = EstadoTravessia(set(estado.tabuleiro))
-        p1, p2 = acao.personagens.p1, acao.personagens.p2
+        p1 = acao.personagens.p1
+        p2 = acao.personagens.p2
         estado_resultante.tabuleiro.add(Personagens(p1, p2))
         contador = 0
         if p1 == 'Pai' or p1 == 'Mãe' or p1 == 'Policial' \

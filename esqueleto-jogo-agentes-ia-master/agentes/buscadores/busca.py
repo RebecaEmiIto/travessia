@@ -1,11 +1,8 @@
-
 from typing import Any, Optional
 from dataclasses import dataclass
 
-
 class ProblemaSemSolucaoException(Exception):
     pass
-
 
 @dataclass
 class No():
@@ -28,7 +25,7 @@ class No():
     @classmethod
     def criar_no_filho(cls, problema, pai, acao):
         novo_estado = problema.resultado(pai.estado, acao)
-        print(f'novo estado = {novo_estado}')
+        #print(f'novo estado = {novo_estado}')
         custo_solucao = pai.custo_solucao + problema.custo(pai.estado, acao, novo_estado)
         return cls(novo_estado, acao, custo_solucao, pai)
 
@@ -63,6 +60,7 @@ def busca_em_arvore(problema) -> No:
 
     raise ProblemaSemSolucaoException()
     print(f'alo')
+    
 busca_arvore_bfs = busca_em_arvore
 
 def busca_em_dfs(problema) -> No:
