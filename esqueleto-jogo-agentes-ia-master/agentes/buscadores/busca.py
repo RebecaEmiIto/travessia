@@ -35,11 +35,13 @@ class No():
 
 def busca_em_arvore(problema) -> No:
     """ Retorna uma solucao ou falha"""
+    #print(f'problema:::: {problema.estado_inicial()}')
     borda = [No(problema.estado_inicial())]
+    #print(f'borda: {borda}')
     while borda:
-        #print(f'kkkk {borda}')
+        #print(f'borda {borda}')
         folha = borda.pop(0)
-        print(f'folha = {folha}')
+        #print(f'folha = {folha}')
         #print(f"Altura {folha.estado}, com {len(borda)} nós na borda.")
         if problema.teste_objetivo(folha.estado):
             print(f'folha sdfs')
@@ -47,11 +49,12 @@ def busca_em_arvore(problema) -> No:
 
         #print(f'estado = {estado} e acao = {acao}')
         # print(f'Não era objetivo. Ações adjacentes são {problema.acoes(folha.estado)}.')
-        print(f'pajncsdv {problema.acoes(folha.estado)}')
+        #print(f'pajncsdv {folha}')
         lista = []
         lista.append(folha)
-        for acao in lista:
-            print(f'kkkk {borda}')
+        for acao in problema.acoes(folha.estado):
+            #Talvez a ação está errado, tem que pegar os personagens?
+            print(f'kkkk {acao}')
             expandido = No.criar_no_filho(problema, folha, acao)
             borda.append(expandido)
 
