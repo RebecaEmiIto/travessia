@@ -55,9 +55,6 @@ class ProblemaTravessia:
         
                 x, y = str(individuo1), str(individuo2)
                 pessoa1, pessoa2 = esquerda[int(x)-1], esquerda[int(y)-1]
-                p1 = f'Personagens(x={Personagens(pessoa1)})'
-                p2 = f'Personagens({Personagens(pessoa2)})'
-                print(pessoa1 in esquerda)
                 if pessoa1 in esquerda:
                     #print(f'1: {Personagens(pessoa1)}, 2: {Personagens(pessoa2)}')
                     #print('estoy aui')
@@ -80,7 +77,7 @@ class ProblemaTravessia:
                 if (pessoa1 in direita and pessoa2 in direita ) or pessoa1 in direita:
                     acoes_possiveis.append(Mover(individuo1, individuo2))
 
-        print(f'adsadasd {acoes_possiveis}')
+        #print(f'adsadasd {acoes_possiveis}')
         return acoes_possiveis
     
     @staticmethod
@@ -89,7 +86,7 @@ class ProblemaTravessia:
         p1 = acao.personagens.x
         estado_resultante.tabuleiro.add(Personagens(p1))
         if acao.personagens2 is None:
-            p2 = ''
+            p2 = None
         else:
             p2 = acao.personagens2.x
             estado_resultante.tabuleiro.add(Personagens(p2))
@@ -115,7 +112,7 @@ class ProblemaTravessia:
                             estado_resultante['Direita'].remove(p2)
                             estado_resultante['Esquerda'].insert(0, p1)
                             estado_resultante['Esquerda'].insert(0, p2)
-                            raise ValueError("Movimento especificado inválido, cheater!")
+                            raise ValueError(f'Movimento especificado inválido, cheater! 1: {p1}, 2: {p2}')
                     # Seleção de 1 pessoa da Esquerda
                     elif (p1 in estado_resultante['Esquerda'] and p2 is None):
                         estado_resultante['Esquerda'].remove(p1)
@@ -127,9 +124,9 @@ class ProblemaTravessia:
                         else:
                             estado_resultante['Direita'].remove(p1)
                             estado_resultante['Esquerda'].insert(0, p1)
-                            raise ValueError("Movimento especificado inválido, cheater!")
+                            raise ValueError(f'Movimento especificado inválido, cheater! 1: {p1}, 2: {p2}')
                     else:
-                        raise ValueError("Movimento especificado inválido, cheater!")
+                        raise ValueError(f'Movimento especificado inválido, cheater! 1: {p1}, 2: {p2}')
                 
                 else: # Jangada na direita
                     # Seleção de 2 pessoas da Direita
@@ -147,7 +144,7 @@ class ProblemaTravessia:
                             estado_resultante['Esquerda'].remove(p2)
                             estado_resultante['Direita'].insert(0, p1)
                             estado_resultante['Direita'].insert(0, p2)
-                            raise ValueError("Movimento especificado inválido, cheater!")
+                            raise ValueError(f'Movimento especificado inválido, cheater! 1: {p1}, 2: {p2}')
                     
                     # Seleção de 1 pessoa da Direita
                     elif (p1 in estado_resultante['Direita'] and p2 is None):
@@ -160,11 +157,11 @@ class ProblemaTravessia:
                         else:
                             estado_resultante['Esquerda'].remove(p1)
                             estado_resultante['Direita'].insert(0, p1)
-                            raise ValueError("Movimento especificado inválido, cheater!")
+                            raise ValueError(f'Movimento especificado inválido, cheater! 1: {p1}, 2: {p2}')
                     else:
-                        raise ValueError("Movimento especificado inválido, cheater!")        
+                        raise ValueError(f'Movimento especificado inválido, cheater! 1: {p1}, 2: {p2}')        
         else:
-            raise ValueError("Movimento especificado inválido, cheater!")
+            raise ValueError(f'Movimento especificado inválido, cheater! 1: {p1}, 2: {p2}')
         print(f'estado resultante tabu = {estado_resultante}')
         return estado_resultante
     
