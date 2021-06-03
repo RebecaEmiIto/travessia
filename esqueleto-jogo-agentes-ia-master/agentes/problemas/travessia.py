@@ -32,7 +32,7 @@ class ProblemaTravessia:
             #    'Direita': []
             #})
             't0': EstadoTravessia({
-                'Esquerda': [Personagens(1),Personagens(2),Personagens(3),Personagens(4),Personagens(5),Personagens(6),Personagens(7),Personagens(8)],
+                'Esquerda': [Personagens(1,2),Personagens(2,3),Personagens(3,4),Personagens(4,5),Personagens(5,6),Personagens(6,7),Personagens(7,8),Personagens(8,1)],
                 'Direita': []
             })
         }
@@ -41,12 +41,16 @@ class ProblemaTravessia:
     @staticmethod
     def acoes(estado: EstadoTravessia) -> Sequence[Mover]:
         acoes_possiveis = list()
+
         for individuo1 in estado.tabuleiro:
-            for individuo2 in estado.tabuleiro+1:
+            for individuo2 in estado.tabuleiro:
+        
                 direita = estado.tabuleiro['Direita']
                 esquerda = estado.tabuleiro['Esquerda']
+        
                 if individuo1 in esquerda:
                     pessoa1, pessoa2 = esquerda.p1, esquerda.p2
+        
                     if Personagens(pessoa1, pessoa2) in esquerda or Personagens(pessoa1) in esquerda:
                         acoes_possiveis.append(Mover(individuo1, individuo2))
                         

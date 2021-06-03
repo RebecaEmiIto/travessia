@@ -22,7 +22,7 @@ class AgenteAutomaticoBfs(AgenteAbstrato):
 
         if not self.solucao:
             self.problema = ProblemaTravessia()  # TODO: # percepcao_mundo)
-            print(f'problema = {self.problema}')
+            #print(f'problema = {self.problema}')
         
     @staticmethod
     def desenhar_tabuleiro(count, percepcao_mundo: PercepcoesJogador):
