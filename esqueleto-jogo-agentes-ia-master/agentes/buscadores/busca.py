@@ -44,7 +44,7 @@ def busca_em_arvore(problema) -> No:
         #print(f'folha = {folha}')
         #print(f"Altura {folha.estado}, com {len(borda)} nós na borda.")
         if problema.teste_objetivo(folha.estado):
-            print(f'folha sdfs')
+            #print(f'folha sdfs')
             return folha
 
         #print(f'estado = {estado} e acao = {acao}')
@@ -53,8 +53,7 @@ def busca_em_arvore(problema) -> No:
         lista = []
         lista.append(folha)
         for acao in problema.acoes(folha.estado):
-            #Talvez a ação está errado, tem que pegar os personagens?
-            print(f'kkkk {acao}')
+            #print(f'kkkk {acao}')
             expandido = No.criar_no_filho(problema, folha, acao)
             borda.append(expandido)
 

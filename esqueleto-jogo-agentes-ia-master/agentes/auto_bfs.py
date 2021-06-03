@@ -54,8 +54,8 @@ class AgenteAutomaticoBfs(AgenteAbstrato):
             no_solucao = busca_arvore_bfs(self.problema)
             print(f'busca_arvore_bfs = {busca_arvore_bfs}')
             self.solucao = no_solucao.caminho_acoes()
-            print(f'jfsdnflksn 2')
-            print(f'alooooo kk{len(self.solucao), self.solucao}')
+            #print(f'jfsdnflksn 2')
+            #print(f'alooooo kk{len(self.solucao), self.solucao}')
             if not self.solucao:
                 raise Exception("Agente BFS não encontrou solução.")
         

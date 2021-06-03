@@ -29,6 +29,7 @@ class Mover:
         return f'Mover {self.personagens} e {self.personagens2} para o outro lado'
 
 class ProblemaTravessia:
+    
     @staticmethod
     def estado_inicial(*argd, **kwargs) -> EstadoTravessia:
         nivel = {
@@ -49,33 +50,33 @@ class ProblemaTravessia:
 
         direita = estado.tabuleiro['Direita']
         esquerda = estado.tabuleiro['Esquerda']
+        if count % 2 == 0:
+            for individuo1 in estado.tabuleiro['Esquerda']:
+                for individuo2 in estado.tabuleiro['Esquerda']:
+            
+                    x, y = str(individuo1), str(individuo2)
+                    pessoa1, pessoa2 = esquerda[int(x)-1], esquerda[int(y)-1]
+                    if pessoa1 in esquerda:
+                        #print(f'1: {Personagens(pessoa1)}, 2: {Personagens(pessoa2)}')
+                        #print('estoy aui')
+                        acoes_possiveis.append(Mover(individuo1, None))
+                        #Personagens(pessoa1, pessoa2)
+                    
+                    if (pessoa1 in esquerda and pessoa2 in esquerda ) or pessoa1 in esquerda:
+                        acoes_possiveis.append(Mover(individuo1, individuo2))
 
-        for individuo1 in estado.tabuleiro['Esquerda']:
-            for individuo2 in estado.tabuleiro['Esquerda']:
-        
-                x, y = str(individuo1), str(individuo2)
-                pessoa1, pessoa2 = esquerda[int(x)-1], esquerda[int(y)-1]
-                if pessoa1 in esquerda:
-                    #print(f'1: {Personagens(pessoa1)}, 2: {Personagens(pessoa2)}')
-                    #print('estoy aui')
-                    acoes_possiveis.append(Mover(individuo1, None))
-                    #Personagens(pessoa1, pessoa2)
-                
-                if (pessoa1 in esquerda and pessoa2 in esquerda ) or pessoa1 in esquerda:
-                    acoes_possiveis.append(Mover(individuo1, individuo2))
+            for individuo1 in estado.tabuleiro['Direita']:            
+                for individuo2 in estado.tabuleiro['Direita']:
 
-        for individuo1 in estado.tabuleiro['Direita']:            
-            for individuo2 in estado.tabuleiro['Direita']:
+                    x, y = str(individuo1), str(individuo2)
+                    pessoa1, pessoa2 = direita[int(x)-1], direita[int(y)-1]
 
-                x, y = str(individuo1), str(individuo2)
-                pessoa1, pessoa2 = direita[int(x)-1], direita[int(y)-1]
-
-                if pessoa1 in direita:
-                    acoes_possiveis.append(Mover(individuo1, None))
-                    #(Personagens(pessoa1) in direita and Personagens(pessoa2) in direita )
-                
-                if (pessoa1 in direita and pessoa2 in direita ) or pessoa1 in direita:
-                    acoes_possiveis.append(Mover(individuo1, individuo2))
+                    if pessoa1 in direita:
+                        acoes_possiveis.append(Mover(individuo1, None))
+                        #(Personagens(pessoa1) in direita and Personagens(pessoa2) in direita )
+                    
+                    if (pessoa1 in direita and pessoa2 in direita ) or pessoa1 in direita:
+                        acoes_possiveis.append(Mover(individuo1, individuo2))
 
         #print(f'adsadasd {acoes_possiveis}')
         return acoes_possiveis
@@ -112,7 +113,7 @@ class ProblemaTravessia:
                             estado_resultante['Direita'].remove(p2)
                             estado_resultante['Esquerda'].insert(0, p1)
                             estado_resultante['Esquerda'].insert(0, p2)
-                            raise ValueError(f'Movimento especificado inválido, cheater! 1: {p1}, 2: {p2}')
+                            #raise ValueError(f'Movimento especificado inválido, cheater! 1: {p1}, 2: {p2}')
                     # Seleção de 1 pessoa da Esquerda
                     elif (p1 in estado_resultante['Esquerda'] and p2 is None):
                         estado_resultante['Esquerda'].remove(p1)
@@ -125,8 +126,8 @@ class ProblemaTravessia:
                             estado_resultante['Direita'].remove(p1)
                             estado_resultante['Esquerda'].insert(0, p1)
                             raise ValueError(f'Movimento especificado inválido, cheater! 1: {p1}, 2: {p2}')
-                    else:
-                        raise ValueError(f'Movimento especificado inválido, cheater! 1: {p1}, 2: {p2}')
+                    #else:
+                    #    raise ValueError(f'Movimento especificado inválido, cheater! 1: {p1}, 2: {p2}')
                 
                 else: # Jangada na direita
                     # Seleção de 2 pessoas da Direita
@@ -144,7 +145,7 @@ class ProblemaTravessia:
                             estado_resultante['Esquerda'].remove(p2)
                             estado_resultante['Direita'].insert(0, p1)
                             estado_resultante['Direita'].insert(0, p2)
-                            raise ValueError(f'Movimento especificado inválido, cheater! 1: {p1}, 2: {p2}')
+                            #raise ValueError(f'Movimento especificado inválido, cheater! 1: {p1}, 2: {p2}')
                     
                     # Seleção de 1 pessoa da Direita
                     elif (p1 in estado_resultante['Direita'] and p2 is None):
@@ -157,11 +158,11 @@ class ProblemaTravessia:
                         else:
                             estado_resultante['Esquerda'].remove(p1)
                             estado_resultante['Direita'].insert(0, p1)
-                            raise ValueError(f'Movimento especificado inválido, cheater! 1: {p1}, 2: {p2}')
-                    else:
-                        raise ValueError(f'Movimento especificado inválido, cheater! 1: {p1}, 2: {p2}')        
-        else:
-            raise ValueError(f'Movimento especificado inválido, cheater! 1: {p1}, 2: {p2}')
+                            #raise ValueError(f'Movimento especificado inválido, cheater! 1: {p1}, 2: {p2}')
+                    #else:
+                        #raise ValueError(f'Movimento especificado inválido, cheater! 1: {p1}, 2: {p2}')        
+        #else:
+        #    raise ValueError(f'Movimento especificado inválido, cheater! 1: {p1}, 2: {p2}')
         print(f'estado resultante tabu = {estado_resultante}')
         return estado_resultante
     
