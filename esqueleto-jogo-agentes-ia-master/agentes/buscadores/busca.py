@@ -33,7 +33,7 @@ class No():
         return f'No({self.estado!r},{self.acao!r})'
 
 
-def busca_em_arvore(problema) -> No:
+def busca_em_arvore(problema, count) -> No:
     """ Retorna uma solucao ou falha"""
     #print(f'problema:::: {problema.estado_inicial()}')
     borda = [No(problema.estado_inicial())]
@@ -45,7 +45,7 @@ def busca_em_arvore(problema) -> No:
         #print(f"Altura {folha.estado}, com {len(borda)} nós na borda.")
         if problema.teste_objetivo(folha.estado):
             #print(f'folha sdfs')
-            
+
             return folha
 
         #print(f'estado = {estado} e acao = {acao}')
@@ -53,11 +53,16 @@ def busca_em_arvore(problema) -> No:
         #print(f'pajncsdv {folha}')
         lista = []
         lista.append(folha)
-        for acao in problema.acoes(folha.estado):
-            #print(f'kkkk {acao}')
-            expandido = No.criar_no_filho(problema, folha, acao)
-            borda.append(expandido)
-
+        if count%2 == 0:
+            for acao in problema.acoesE(folha.estado):
+                #print(f'kkkk {acao}')
+                expandido = No.criar_no_filho(problema, folha, acao)
+                borda.append(expandido)
+        else:
+            for acao in problema.acoesD(folha.estado):
+                    #print(f'kkkk {acao}')
+                    expandido = No.criar_no_filho(problema, folha, acao)
+                    borda.append(expandido)
 
             # print(f'Enfileirado {expandido}')
 

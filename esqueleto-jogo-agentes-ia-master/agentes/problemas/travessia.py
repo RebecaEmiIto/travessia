@@ -45,19 +45,18 @@ class ProblemaTravessia:
         return nivel[kwargs.get('nivel', 't0')]
     
     @staticmethod
-    def acoes(estado: EstadoTravessia) -> Sequence[Mover]:
+    def acoesE(estado: EstadoTravessia) -> Sequence[Mover]:
         acoes_possiveis = list()
 
-        direita = estado.tabuleiro['Direita']
         esquerda = estado.tabuleiro['Esquerda']
-        #if count % 2 == 0:
+        
         for individuo1 in estado.tabuleiro['Esquerda']:
             for individuo2 in estado.tabuleiro['Esquerda']:
         
                 x, y = str(individuo1), str(individuo2)
                 pessoa1, pessoa2 = esquerda[int(x)-1], esquerda[int(y)-1]
+                print(f'1: {Personagens(pessoa1)}, 2: {Personagens(pessoa2)}')
                 if pessoa1 in esquerda:
-                    #print(f'1: {Personagens(pessoa1)}, 2: {Personagens(pessoa2)}')
                     #print('estoy aui')
                     acoes_possiveis.append(Mover(individuo1, None))
                     #Personagens(pessoa1, pessoa2)
@@ -65,6 +64,15 @@ class ProblemaTravessia:
                 if (pessoa1 in esquerda and pessoa2 in esquerda ) or pessoa1 in esquerda:
                     acoes_possiveis.append(Mover(individuo1, individuo2))
 
+        #print(f'adsadasd {acoes_possiveis}')
+        return acoes_possiveis
+    
+    @staticmethod
+    def acoesD(estado: EstadoTravessia) -> Sequence[Mover]:
+        acoes_possiveis = list()
+
+        direita = estado.tabuleiro['Direita']
+        
         for individuo1 in estado.tabuleiro['Direita']:            
             for individuo2 in estado.tabuleiro['Direita']:
 
@@ -80,7 +88,7 @@ class ProblemaTravessia:
 
         #print(f'adsadasd {acoes_possiveis}')
         return acoes_possiveis
-    
+
     @staticmethod
     def resultado(estado: EstadoTravessia, acao: Mover) -> EstadoTravessia:
         estado_resultante = EstadoTravessia(set(estado.tabuleiro))
@@ -163,7 +171,7 @@ class ProblemaTravessia:
                         #raise ValueError(f'Movimento especificado inválido, cheater! 1: {p1}, 2: {p2}')        
         #else:
         #    raise ValueError(f'Movimento especificado inválido, cheater! 1: {p1}, 2: {p2}')
-        print(f'estado resultante tabu = {estado_resultante}')
+        #print(f'estado resultante tabu = {estado_resultante}')
         return estado_resultante
     
     def ValidacaoDireitaEsquerda(self) -> bool:

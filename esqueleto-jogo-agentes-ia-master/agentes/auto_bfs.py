@@ -51,7 +51,7 @@ class AgenteAutomaticoBfs(AgenteAbstrato):
 
     def escolherProximaAcao(self):
         if not self.solucao:
-            no_solucao = busca_arvore_bfs(self.problema)
+            no_solucao = busca_arvore_bfs(self.problema, self.count)
             print(f'busca_arvore_bfs = {busca_arvore_bfs}')
             self.solucao = no_solucao.caminho_acoes()
             #print(f'jfsdnflksn 2')
