@@ -49,6 +49,7 @@ class ProblemaTravessia:
         acoes_possiveis = list()
 
         esquerda = estado.tabuleiro['Esquerda']
+        esquerda.sort()
         
         for individuo1 in estado.tabuleiro['Esquerda']:
             for individuo2 in estado.tabuleiro['Esquerda']:
@@ -59,9 +60,9 @@ class ProblemaTravessia:
                 if pessoa1 in esquerda:
                     print('estoy aui')
                     acoes_possiveis.append(Mover(individuo1, None))
-                    Personagens(pessoa1, pessoa2)
+                    #Personagens(pessoa1, pessoa2)
                 
-                if (pessoa1 in esquerda and pessoa2 in esquerda) or pessoa1 in esquerda:
+                if (pessoa1 in esquerda and pessoa2 in esquerda):
                     acoes_possiveis.append(Mover(individuo1, individuo2))
 
         #print(f'adsadasd {acoes_possiveis}')
@@ -72,6 +73,7 @@ class ProblemaTravessia:
         acoes_possiveis = list()
 
         direita = estado.tabuleiro['Direita']
+        direita.sort()
         
         for individuo1 in estado.tabuleiro['Direita']:            
             for individuo2 in estado.tabuleiro['Direita']:
@@ -83,7 +85,7 @@ class ProblemaTravessia:
                     acoes_possiveis.append(Mover(individuo1, None))
                     #(Personagens(pessoa1) in direita and Personagens(pessoa2) in direita )
                 
-                if (pessoa1 in direita and pessoa2 in direita) or pessoa1 in direita:
+                if (pessoa1 in direita and pessoa2 in direita):
                     acoes_possiveis.append(Mover(individuo1, individuo2))
 
         #print(f'adsadasd {acoes_possiveis}')

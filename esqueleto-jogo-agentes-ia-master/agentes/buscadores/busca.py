@@ -53,6 +53,8 @@ def busca_em_arvore(problema, count) -> No:
         #print(f'pajncsdv {folha}')
         lista = []
         lista.append(folha)
+        count = count - 1
+        print(f'cont: {count}')
         if count%2 == 0:
             for acao in problema.acoesE(folha.estado):
                 print(f'kkkkESQ {acao}')
