@@ -57,11 +57,11 @@ class ProblemaTravessia:
                 pessoa1, pessoa2 = esquerda[int(x)-1], esquerda[int(y)-1]
                 print(f'1: {Personagens(pessoa1)}, 2: {Personagens(pessoa2)}')
                 if pessoa1 in esquerda:
-                    #print('estoy aui')
+                    print('estoy aui')
                     acoes_possiveis.append(Mover(individuo1, None))
-                    #Personagens(pessoa1, pessoa2)
+                    Personagens(pessoa1, pessoa2)
                 
-                if (pessoa1 in esquerda and pessoa2 in esquerda ) or pessoa1 in esquerda:
+                if (pessoa1 in esquerda and pessoa2 in esquerda) or pessoa1 in esquerda:
                     acoes_possiveis.append(Mover(individuo1, individuo2))
 
         #print(f'adsadasd {acoes_possiveis}')
@@ -83,11 +83,13 @@ class ProblemaTravessia:
                     acoes_possiveis.append(Mover(individuo1, None))
                     #(Personagens(pessoa1) in direita and Personagens(pessoa2) in direita )
                 
-                if (pessoa1 in direita and pessoa2 in direita ) or pessoa1 in direita:
+                if (pessoa1 in direita and pessoa2 in direita) or pessoa1 in direita:
                     acoes_possiveis.append(Mover(individuo1, individuo2))
 
         #print(f'adsadasd {acoes_possiveis}')
         return acoes_possiveis
+
+
 
     @staticmethod
     def resultado(estado: EstadoTravessia, acao: Mover) -> EstadoTravessia:

@@ -55,12 +55,12 @@ def busca_em_arvore(problema, count) -> No:
         lista.append(folha)
         if count%2 == 0:
             for acao in problema.acoesE(folha.estado):
-                #print(f'kkkk {acao}')
+                print(f'kkkkESQ {acao}')
                 expandido = No.criar_no_filho(problema, folha, acao)
                 borda.append(expandido)
         else:
             for acao in problema.acoesD(folha.estado):
-                    #print(f'kkkk {acao}')
+                    print(f'kkkkDIR {acao}')
                     expandido = No.criar_no_filho(problema, folha, acao)
                     borda.append(expandido)
 
