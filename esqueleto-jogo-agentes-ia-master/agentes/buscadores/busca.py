@@ -45,6 +45,7 @@ def busca_em_arvore(problema) -> No:
         #print(f"Altura {folha.estado}, com {len(borda)} nós na borda.")
         if problema.teste_objetivo(folha.estado):
             #print(f'folha sdfs')
+            
             return folha
 
         #print(f'estado = {estado} e acao = {acao}')

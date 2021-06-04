@@ -17,7 +17,7 @@ class AgenteAutomaticoDfs(AgenteAbstrato):
         self.solucao: list = None
     
     def adquirirPercepcao(self, percepcao_mundo: PercepcoesJogador):
-        AgenteAutomaticoBfs.desenhar_tabuleiro(self.count, percepcao_mundo)
+        AgenteAutomaticoDfs.desenhar_tabuleiro(self.count, percepcao_mundo)
         self.count += 1
 
         if not self.solucao:
@@ -62,7 +62,7 @@ class AgenteAutomaticoDfs(AgenteAbstrato):
         print(f'Próxima ação é {acao}.')
         time.sleep(2)
 
-        p1, p2 = AgenteAutomaticoBfs.parse_jogada(acao)
+        p1, p2 = AgenteAutomaticoDfs.parse_jogada(acao)
         return AcaoJogador.SelecionarIndividuo(p1, p2)
 
     @staticmethod

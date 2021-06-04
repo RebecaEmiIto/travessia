@@ -50,33 +50,33 @@ class ProblemaTravessia:
 
         direita = estado.tabuleiro['Direita']
         esquerda = estado.tabuleiro['Esquerda']
-        if count % 2 == 0:
-            for individuo1 in estado.tabuleiro['Esquerda']:
-                for individuo2 in estado.tabuleiro['Esquerda']:
-            
-                    x, y = str(individuo1), str(individuo2)
-                    pessoa1, pessoa2 = esquerda[int(x)-1], esquerda[int(y)-1]
-                    if pessoa1 in esquerda:
-                        #print(f'1: {Personagens(pessoa1)}, 2: {Personagens(pessoa2)}')
-                        #print('estoy aui')
-                        acoes_possiveis.append(Mover(individuo1, None))
-                        #Personagens(pessoa1, pessoa2)
-                    
-                    if (pessoa1 in esquerda and pessoa2 in esquerda ) or pessoa1 in esquerda:
-                        acoes_possiveis.append(Mover(individuo1, individuo2))
+        #if count % 2 == 0:
+        for individuo1 in estado.tabuleiro['Esquerda']:
+            for individuo2 in estado.tabuleiro['Esquerda']:
+        
+                x, y = str(individuo1), str(individuo2)
+                pessoa1, pessoa2 = esquerda[int(x)-1], esquerda[int(y)-1]
+                if pessoa1 in esquerda:
+                    #print(f'1: {Personagens(pessoa1)}, 2: {Personagens(pessoa2)}')
+                    #print('estoy aui')
+                    acoes_possiveis.append(Mover(individuo1, None))
+                    #Personagens(pessoa1, pessoa2)
+                
+                if (pessoa1 in esquerda and pessoa2 in esquerda ) or pessoa1 in esquerda:
+                    acoes_possiveis.append(Mover(individuo1, individuo2))
 
-            for individuo1 in estado.tabuleiro['Direita']:            
-                for individuo2 in estado.tabuleiro['Direita']:
+        for individuo1 in estado.tabuleiro['Direita']:            
+            for individuo2 in estado.tabuleiro['Direita']:
 
-                    x, y = str(individuo1), str(individuo2)
-                    pessoa1, pessoa2 = direita[int(x)-1], direita[int(y)-1]
+                x, y = str(individuo1), str(individuo2)
+                pessoa1, pessoa2 = direita[int(x)-1], direita[int(y)-1]
 
-                    if pessoa1 in direita:
-                        acoes_possiveis.append(Mover(individuo1, None))
-                        #(Personagens(pessoa1) in direita and Personagens(pessoa2) in direita )
-                    
-                    if (pessoa1 in direita and pessoa2 in direita ) or pessoa1 in direita:
-                        acoes_possiveis.append(Mover(individuo1, individuo2))
+                if pessoa1 in direita:
+                    acoes_possiveis.append(Mover(individuo1, None))
+                    #(Personagens(pessoa1) in direita and Personagens(pessoa2) in direita )
+                
+                if (pessoa1 in direita and pessoa2 in direita ) or pessoa1 in direita:
+                    acoes_possiveis.append(Mover(individuo1, individuo2))
 
         #print(f'adsadasd {acoes_possiveis}')
         return acoes_possiveis
